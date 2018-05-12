@@ -2,15 +2,14 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CatSchema = new mongoose.Schema({
+  _id: {
+    type: Number
+  },
   name: {
-    type: String,
-    required: [true, 'Name is required.']
+    type: String
   },
   img: {
     type: String
-  },
-  kittyid: {
-    type: Number
   },
   username: {
     type: String
@@ -47,10 +46,10 @@ const CatSchema = new mongoose.Schema({
 
 
 const Web3Schema = new mongoose.Schema({
-  address: {
+  _id: {
     type: String
   },
-  id: {
+  kittyid: {
     type: [Number],
     default: []
   },
