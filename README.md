@@ -5,4 +5,5 @@
 ## dapp
 
 ## web3
-### sample parsed kitten data is in ethereum/data.json
+
+sample parsed kitten data is in ethereum/data.json
