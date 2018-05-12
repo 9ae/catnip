@@ -8,7 +8,8 @@ import {
 import App from './App';
 import CatDetails from './components/CatDetails';
 
-const Routes = () => (  <Router>
+const Routes = () => (
+  <Router>
   <div>
     <Route exact path="/" component={App}/>
     <Route exact path="/cat" component={CatDetails} />
