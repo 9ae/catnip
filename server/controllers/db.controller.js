@@ -10,4 +10,31 @@ FUNCTIONALITIES:
     Update balance
     add Cat to user (web3 schema)
 
+
 */
+
+
+function addCat(req, res) {
+
+}
+
+function updateCat(req, res) {
+
+}
+
+function siringWith(req, res {
+
+}
+
+function updateBalance(req, res){
+
+}
+
+function associateCat(req, res){
+  
+}
+
+
+module.exports =  {
+
+}
