@@ -12,9 +12,6 @@ router.route('/api/getUser').get(DBController.getAddress);
 // add a cat
 router.route('/api/addCat').post(DBController.addCat);
 
-//scrape kitty data from Cryptokitties.co
-router.route('/api/updateCat').post(DBController.scrapeKittyAndUpdate);
-
 //update a user balance
 router.route('/api/updateBalance').post(DBController.updateBalance);
 
