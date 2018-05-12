@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import Card from './Card';
 
 import './TinderLayout.css';
 
 class TinderLayout extends Component {
+
+
   render() {
     return (
       <div class="tbg">
@@ -10,18 +13,17 @@ class TinderLayout extends Component {
           <i class="fa fa-cog" aria-hidden="true"></i>
           <i class="fa fa-comments" aria-hidden="true"></i>
           <div class="tlogo">
-            <img src="https://worldvectorlogo.com/logos/tinder-1.svg"  title="Tinder Logo" />
+            Catnip &lt;3
           </div>
         </div>
         <div class="tbgwrap">
-          <div class="tphoto">
-              <img src="http://www.amicnews.com/wp-content/uploads/2015/04/Sunglasses-Trends-for-Summer-2015.jpg" title="tphoto"  />
-              <div class="tname">Pussy Cat, <span class="age">27</span></div>
-              <div class="tinfo"><i class="fa fa-book" aria-hidden="true"> 0</i><i class="fa fa-users" aria-hidden="true"> 0</i></div>
-            </div>
+            <Card
+              image='/images/kit1.jpg'
+              petname='Cat name'
+            />
             <div class="tcontrols">
               <div class="tno"><i class="fa fa-times" aria-hidden="true"></i></div>
-              <div class="ti"><i class="fa fa-info" aria-hidden="true"></i></div>
+              <div class="ti"><i class="fas fa-rocket" aria-hidden="true"></i></div>
               <div class="tyes"><i class="fa fa-heart" aria-hidden="true"></i></div>
             </div>
         </div>

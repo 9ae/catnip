@@ -44,7 +44,9 @@ Tinder Template by Miami
     background-color: #fff;
     box-shadow: 2px 2px 2px #c0c0c0;
 }
-.tphoto img {}
+.tphoto img {
+  width: 100%;
+}
 .tname {
     padding: 15px;
     font-size: 20px;
@@ -94,9 +96,9 @@ Tinder Template by Miami
     top: 30px;
     border: 10px solid #f0f0f0;
 }
-.ti .fa-info {
+.ti .fa-rocket {
     font-size: 23px;
-    padding: 15px 20px;
+    padding: 15px;
     color: #398beb;
 }
 .tyes {
