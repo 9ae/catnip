@@ -18,8 +18,13 @@
   },
   "homepage": "https://github.com/9ae/catnip#readme",
   "dependencies": {
+<<<<<<< HEAD
     "express": "^4.16.3",
     "mongoose": "^5.1.0",
+=======
+    "fs-extra": "^6.0.1",
+    "solc": "^0.4.23",
+>>>>>>> 017a5c0664ddffe27680ba161f046acfdd4e790a
     "truffle-hdwallet-provider": "0.0.5"
   }
 }
