@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import SwipeCompo from './SwipeCompo';
+import TinderLayout from './components/TinderLayout.js';
 
 class App extends Component {
   render() {
@@ -12,7 +13,7 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <div className="App-intro">
-          <SwipeCompo />
+          <TinderLayout />
         </div>
       </div>
     );
