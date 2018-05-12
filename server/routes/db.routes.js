@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const DBController =  require('../controllers/db.controller.js');
+const requestHandler = require('../controllers/requestHandler'); 
 
 // get the cat
 router.route('/api/getCat').get(DBController.getCat);
@@ -22,20 +23,16 @@ router.route('/api/updateSiring').post(DBController.updateSiring);
 router.route('/api/addAddress').post(DBController.addAddress);
 
 //Takes an address and returns the list of kitties owned by the user
-router.route('/api/getKittyList').get();
+router.route('/api/getKittyList').get(requestHandler.handleGetKittyList);
 
 //pass address, kittyID, breeding/siring, price, listed
-router.route('/api/updateKittyListing').post()
+router.route('/api/updateKittyListing').post(requestHandler.handleUpdateKittyListing);
 
 //takes a kittyID returns list of kitties that will show up
-router.route('/api/getKittiesToDisplay').get()
+router.route('/api/getKittiesToDisplay').get(requestHandler.handleGetKittiesToDisplay);
 
 //yourKittyID, likedKittyID, liked/disliked
-router.route('/api/voteOnKitty')
-
-
-
-
+router.route('/api/voteOnKitty').post(requestHandler.handleVoteOnKitty);
 
 
 module.exports = router;
