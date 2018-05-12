@@ -1,3 +1,4 @@
 .DS_Store
 /ethereum/node_modules
 /ethereum/.package-lock.json
+node_modules

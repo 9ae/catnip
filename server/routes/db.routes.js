@@ -3,45 +3,28 @@ const router = express.Router();
 
 const DBController =  require('../controllers/db.controller.js');
 
-// Get all questions
-router.route('/api').get(DBController.getQuestions);
+// get the cat
+router.route('/api/getCat').get(DBController.getCat);
 
-// Get questions with a specific tag
-router.route('/api/tag/:tag').get(DBController.filterTag);
+// get the user
+router.route('/api/getUser').get(DBController.getAddress);
 
-// Get the page of a specific question
-router.route('/api/get/:q').get(DBController.getQuestion);
+// add a cat
+router.route('/api/addCat').post(DBController.addCat);
 
-// Post a question
-router.route('/api/ask').post(DBController.postQuestion);
+//scrape kitty data from Cryptokitties.co
+router.route('/api/updateCat').post(DBController.scrapeKittyAndUpdate);
 
-// Post an answer
-router.route('/api/answer').post(DBController.postAnswer);
+//update a user balance
+router.route('/api/updateBalance').post(DBController.updateBalance);
 
-// Edit a question
-router.route('/api/editQuestion').post(DBController.editQuestion);
+//update a cat's status as siring / not
+router.route('/api/updateSiring').post(DBController.updateSiring);
 
-// Edit a answer
-router.route('/api/editAnswer').post(DBController.editAnswer);
+//add an address( public key), a kitty id and a balance to db
+router.route('/api/addAddress').post(DBController.addAddress);
 
-// Upvote / Downvote a answer
-router.route('/api/vote').post(DBController.vote);
 
-// Filter by most upvotes
-router.route('/api/hot').get(DBController.filterHottest);
 
 
 module.exports = router;
-
-
-
-const scraper = require('../scraper');
-
-const mockID = 748523;
-
-
-router.post('/registerKitties', (req, res) => {
-
-	console.log(scraper.scrapeKitty(mockID));
-
-})
