@@ -1,0 +1,14 @@
+GET kittiesForUser(address):
+	gets a list of kitties for user
+	
+
+POST registerKitty(kittyID): 
+	registers a kitty to be available
+
+GET getKitties(address)
+	returns kitties to display
+
+POST actionTaken(address, kittyID, boolean liked)
+	when liked or disliked, called by front end
+
+
