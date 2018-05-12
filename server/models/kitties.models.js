@@ -21,9 +21,11 @@ const CatSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
-  parents:{
-    type: [Number],
-    default: []
+  matron:{
+    type: Number
+  },
+  sire:{
+    type: Number
   },
   bio:{
     type: String,
@@ -39,8 +41,19 @@ const CatSchema = new mongoose.Schema({
   cooldown:{
     type: Number
   },
+  cooldownindex:{
+    type: Number
+  },
   generation: {
     type: Number
+  }
+  liked: {
+    type: [Number],
+    default: []
+  }
+  disliked: {
+    type: [Number],
+    default: []
   }
 });
 
@@ -64,7 +77,21 @@ const Web3Schema = new mongoose.Schema({
 });
 
 
+// const ChatSchema = new mongoose.Schema({
+//   party1: {
+//     type: String
+//   }
+//   party2: {
+//     type: String
+//   }
+//   history: {
+//
+//   }
+// });
+
+
 module.exports = {
   Cat: mongoose.model('cats', CatSchema),
-  Web3: mongoose.model('web3', Web3Schema)
+  Web3: mongoose.model('web3', Web3Schema),
+  Chat: mongoose.model('chat', ChatSchema)
 };

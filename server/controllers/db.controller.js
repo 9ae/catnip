@@ -1,66 +1,63 @@
 const Cat = require('../models/kitties.models').Cat;
 const Web3 = require('../models/kitties.models').Web3;
 const mongoose = require('mongoose');
-const scraper = require('../scraper');
+const scraper = require('./scraper').scrapeKitty;
 const mockID = 748523;
 
-/**
-FUNCTIONALITIES:
-    AddCat
-    Cat Update (automatically upon login by user)
-    Change Siring with
-    Update balance
-    add Cat to user (web3 schema)
 
-
-*/
-
-/**
-
-*/
+          //NOTE: req.body.kittyid
 function addCat(req, res) {
   console.log('adding a kitty to the database!');
 
+  const scrapeData = scraper(id);
+  scrapeData.cattributes = separate(scrapeData.cattributes);
+
   const data = {
-    name: req.body.name || null,
-    img: req.body.img || null,
+    name: scrapeData.name || null,
+    img: scrapeData.img || null,
     _id: req.body.kittyid || null,
-    username: req.body.username || null,
+    username: scrapeData.username || null,
     owner: req.body.owner || null,
-    cattributes: req.body.cattributes || null,
-    parents: req.body.parents || null,
-    bio: req.body.bio || null,
-    birthtime: req.body.birthtime || null,
-    siringwith: req.body.siringwith || null,
-    cooldown: req.body.cooldown || null,
-    generation: req.body.generation || null
+    cattributes: scrapeData.cattributes || null,
+    matron: scrapeData.matron || null,
+    sire: scrapeData.sire || null,
+    bio: scrapeData.bio || null,
+    birthtime: scrapeData.birthtime || null,
+    siringwith: scrapeData.siringwith || null,
+    cooldown: scrapeData.cooldown || null,
+    cooldownindex: scrapeData.cooldownindex || null,
+    generation: scrapeData.generation || null
   }
 
   const newCat = new Cat(data);
   newCat.save()
-  .then(cat => console.log(cat))
+  .then(cat => res.json(cat))
   .catch((err) => {res.status(401).send({error: err})});
 }
 
-function scrapeKittyAndUpdate(req, res) {
-  console.log('updating kitty information from the scraper!');
 
-  const id = req.body.id;
-  const data = {
-    name: req.body.name || null,
-    img: req.body.img || null,
-    username: req.body.username || null,
-    cattributes: req.body.cattributes || null,
-    parents: req.body.parents || null,
-    bio: req.body.bio || null,
-    birthtime: req.body.birthtime || null
-  }
+function getCat(req, res) {
+  console.log('getting cat data!');
 
-  Cat.findByIdAndUpdate(id, data)
-  .then(cat => console.log(cat))
+  const id = req.body.kittyid;
+
+  Cat.findById(id)
+  .then(cat => res.json(cat))
   .catch((err) => {res.status(401).send({error: err})});
-
 }
+
+
+
+function getAddress(req,res) {
+  console.log('getting the address!');
+
+  const id = req.body.address;
+
+  Web3.findById(id)
+  .then(cat => res.json(cat))
+  .catch((err) => {res.status(401).send({error: err})});
+}
+
 
 function updateSiring(req, res) {
   console.log('updating cat data!');
@@ -107,10 +104,24 @@ function updateBalance(req, res){
 }
 
 
+
+function separate(arr) {
+   let newArr = [];
+   arr.forEach(el => {
+     const obj = {};
+     obj[el.slice(0,(el.indexOf('|')))]= el.slice(el.indexOf('|')+1);
+     newArr.push(obj);
+   });
+   return newArr;
+}
+
+
 module.exports =  {
   addCat: addCat,
   scrapeKittyAndUpdate: scrapeKittyAndUpdate,
   updateBalance: updateBalance,
   updateSiring: updateSiring,
-  addAddress: addAddress
+  addAddress: addAddress,
+  getCat: getCat,
+  getAddress: getAddress
 }

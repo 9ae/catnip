@@ -3,11 +3,14 @@ const router = express.Router();
 
 const DBController =  require('../controllers/db.controller.js');
 
-// Get all questions
-router.route('/api/addCat').post(DBController.addCat);
+// get the cat
+router.route('/api/getCat').get(DBController.getCat);
 
-//scrape kitty data from Cryptokitties.co
-router.route('/api/updateCat').post(DBController.scrapeKittyAndUpdate);
+// get the user
+router.route('/api/getUser').get(DBController.getAddress);
+
+// add a cat
+router.route('/api/addCat').post(DBController.addCat);
 
 //update a user balance
 router.route('/api/updateBalance').post(DBController.updateBalance);
@@ -29,6 +32,8 @@ router.route('/api/getKittiesToDisplay').get()
 
 //yourKittyID, likedKittyID, liked/disliked
 router.route('/api/voteOnKitty')
+
+
 
 
 
