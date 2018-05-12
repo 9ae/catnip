@@ -55,6 +55,10 @@ const CatSchema = new mongoose.Schema({
     type: [Number],
     default: []
   }
+  matched: {
+    type: [Number],
+    default: []
+  }
 });
 
 
