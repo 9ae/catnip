@@ -6,10 +6,11 @@ Tinder Template by Miami
     width: 400px;
     background-color: #fff;
     margin: 0 auto;
-    border: 1px solid #c0c0c0;
 }
 .tbgwrap { padding: 10px; }
-.theader { height: 65px; border-bottom: 1px solid #c0c0c0; }
+.theader {
+  display: none;
+  height: 65px; border-bottom: 1px solid #c0c0c0; }
 .theader i.fa-comments {
     color: #c0c0c0;
     font-size: 40px;
@@ -28,7 +29,7 @@ Tinder Template by Miami
 }
 .tlogo { width: 100px; margin: 0 auto; padding: 10px; }
 .tlogo img { width: 100px; }
-.tphoto {
+.card {
     width: 350px;
     height: 350px;
     overflow: hidden;
@@ -44,15 +45,31 @@ Tinder Template by Miami
     background-color: #fff;
     box-shadow: 2px 2px 2px #c0c0c0;
 }
-.tphoto img {
+.card img {
   width: 100%;
 }
-.tname {
+
+.card.right {
+  border: 2px solid #5de19c;
+}
+
+.card.left {
+  border: 2px solid #ff695b;
+}
+
+.cat-info {
     padding: 15px;
     font-size: 20px;
     font-family: 'Helvetica', sans-serif;
-    float: left;
 }
+.cat-info .price {
+  float: left;
+}
+
+.cat-info .rare {
+  float: right;
+}
+
 .tname .age { font-weight: 200; }
 .tinfo { font-family: 'Helvetica', sans-serif; }
 .tinfo .fa-users, .tinfo .fa-book {

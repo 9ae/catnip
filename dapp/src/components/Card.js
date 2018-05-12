@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import classnames from 'classnames';
 
 const SWIPE_RIGHT = 'SWIPE_RIGHT';
 const SWIPE_LEFT = 'SWIPE_LEFT';
@@ -23,7 +24,7 @@ class Card extends Component {
   }
 
   dragStart = (evt) => {
-    console.log('drag Start @ '+evt.clientX);
+    // console.log('drag Start @ '+evt.clientX);
     this.mouseX = evt.clientX;
 
     evt.preventDefault();
@@ -31,7 +32,6 @@ class Card extends Component {
 
   dragging = (evt) => {
     if(this.mouseX === 0) return;
-    console.log('moving');
 
     let diffX = (evt.clientX - this.mouseX)
     const sign = (diffX > 0 ? 1 : -1)
@@ -49,14 +49,14 @@ class Card extends Component {
   }
 
   dragEnd = (evt) => {
-    console.log('drag End @ ' +evt.clientX);
+    // console.log('drag End @ ' +evt.clientX);
     const diffX = evt.clientX - this.mouseX;
     let direction = SWIPE_NONE;
     if(diffX > THRESHOLD){
-      console.log('swipe right')
+      this.props.onSwipeRight(this.props.catId)
     }
     else if (diffX < -1*THRESHOLD) {
-      console.log('swipe left')
+      this.props.onSwipeLeft(this.props.catId)
     }
 
     this.mouseX = 0;
@@ -70,11 +70,15 @@ class Card extends Component {
 
   render(){
     return(
-      <div class="tphoto"
+      <div
         draggable="true"
         onMouseDown={this.dragStart}
         onMouseMove={this.dragging}
         onMouseUp={this.dragEnd}
+        className={classnames('card', {
+          'right': this.state.swipeDirection === SWIPE_RIGHT,
+          'left': this.state.swipeDirection === SWIPE_LEFT
+        })}
         style={{
           transform: this.state.transform,
           transformOrigin: this.state.swipeDirection === SWIPE_LEFT ? '0% 100%' : '100% 100%'
@@ -84,7 +88,10 @@ class Card extends Component {
           src={this.props.image}
           title="tphoto"
         />
-        <div class="tname">{this.props.petname}</div>
+        <div class="cat-info">
+          <span class="price">{this.props.catPrice}</span>
+          <span class="rare">{this.props.rareAttr}</span>
+        </div>
       </div>
     )
   }

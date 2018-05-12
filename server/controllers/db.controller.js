@@ -6,7 +6,7 @@ const mockID = 748523;
 
 
           //NOTE: req.body.kittyid
-function addCat(req, res) {
+function addCat(kittyId) {
   console.log('adding a kitty to the database!');
 
   const scrapeData = scraper(id);
@@ -15,7 +15,7 @@ function addCat(req, res) {
   const data = {
     name: scrapeData.name || null,
     img: scrapeData.img || null,
-    _id: req.body.kittyid || null,
+    _id: kittyId || null,
     username: scrapeData.username || null,
     owner: req.body.owner || null,
     cattributes: scrapeData.cattributes || null,
@@ -29,10 +29,11 @@ function addCat(req, res) {
     generation: scrapeData.generation || null
   }
 
+
   const newCat = new Cat(data);
-  newCat.save()
-  .then(cat => res.json(cat))
-  .catch((err) => {res.status(401).send({error: err})});
+
+  return newCat.save()
+  .catch((err) => {console.log(err)});
 }
 
 
@@ -103,7 +104,33 @@ function updateBalance(req, res){
 
 }
 
+// liked > 0 , disliked <0
+function voteOnKitty(req, res) {
 
+  const me = req.body.idme;
+  const mate = req.body.idmate;
+  const vote = parseInt(req.body.vote) > 0 ? 'liked' : 'disliked';
+
+  Cat.findByIdAndUpdate(me, {vote: mate})
+}
+
+
+
+
+function getKittiesToDisplay(req, res) {
+
+  const me = req.body.id;
+  Cat.findById(me)
+  .then(cat => {
+    const disliked = cat.disliked;
+    disliked.push(me);
+    Cat.find({_id: {$not : {$in : disliked}}})
+    .limit(20)
+    .then(catList => res.json(catList))
+    .catch((err) => {res.status(401).send({error: err})});
+  })
+  .catch((err) => {res.status(401).send({error: err})});
+}
 
 function separate(arr) {
    let newArr = [];
@@ -123,5 +150,7 @@ module.exports =  {
   updateSiring: updateSiring,
   addAddress: addAddress,
   getCat: getCat,
-  getAddress: getAddress
+  getAddress: getAddress,
+  voteOnKitty: voteOnKitty,
+  getKittiesToDisplay: getKittiesToDisplay
 }
