@@ -10,7 +10,7 @@ class TinderLayout extends Component {
     return (
       <div class="tbg">
         <div class="theader">
-          <i class="fa fa-cog" aria-hidden="true"> link to Settings</i>
+          <i class="fa fa-cog" aria-hidden="true"> link to Settings </i>
           <i class="fa fa-comments" aria-hidden="true"></i>
           <div class="tlogo">
             Catnip &lt;3
