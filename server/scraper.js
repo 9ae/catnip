@@ -3,10 +3,10 @@ const cheerio = require('cheerio');
 
 const scrapeKitty = (kittyID) => {
 
-
+	return 'blabla'; 
 
 }; 
 
-return {
+module.exports = {
 	scrapeKitty: scrapeKitty
 }; 

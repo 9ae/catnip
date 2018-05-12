@@ -10,3 +10,5 @@ router.post('/registerKitties', (req, res) => {
 	console.log(scraper.scrapeKitty(mockID)); 
 
 })
+
+module.exports = router; 
