@@ -7,7 +7,9 @@ import TinderLayout from './components/TinderLayout.js';
 class App extends Component {
   render() {
     return (
-      <div className="App"></div>
+      <div className="App">
+      <TinderLayout />
+      </div>
     );
   }
 }
