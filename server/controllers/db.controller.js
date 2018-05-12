@@ -1,7 +1,7 @@
 const Cat = require('../models/kitties.models').Cat;
 const Web3 = require('../models/kitties.models').Web3;
 const mongoose = require('mongoose');
-const scraper = require('../scraper');
+const scraper = require('./scraper').scrapeKitty;
 const mockID = 748523;
 
 /**
@@ -46,15 +46,17 @@ function scrapeKittyAndUpdate(req, res) {
   console.log('updating kitty information from the scraper!');
 
   const id = req.body.id;
-  const data = {
-    name: req.body.name || null,
-    img: req.body.img || null,
-    username: req.body.username || null,
-    cattributes: req.body.cattributes || null,
-    parents: req.body.parents || null,
-    bio: req.body.bio || null,
-    birthtime: req.body.birthtime || null
-  }
+  // const data = {
+  //   name: req.body.name || null,
+  //   img: req.body.img || null,
+  //   username: req.body.username || null,
+  //   cattributes: req.body.cattributes || null,
+  //   bio: req.body.bio || null,
+  //   birthtime: req.body.birthtime || null
+  // }
+
+  const data = scraper(id);
+  data.cattributes = separate(data.cattributes);
 
   Cat.findByIdAndUpdate(id, data)
   .then(cat => console.log(cat))
@@ -106,11 +108,44 @@ function updateBalance(req, res){
 
 }
 
+function getCat(req, res) {
+  console.log('getting cat data!');
+
+  const id = req.body.kittyid;
+
+  Cat.findById(id)
+  .then(cat => res.json(cat))
+  .catch((err) => {res.status(401).send({error: err})});
+}
+
+function getAddress(req,res) {
+  console.log('getting the address!');
+
+  const id = req.body.address;
+
+  Web3.findById(id)
+  .then(cat => res.json(cat))
+  .catch((err) => {res.status(401).send({error: err})});
+}
+
+
+function separate(arr) {
+   let newArr = [];
+   arr.forEach(el => {
+     const obj = {};
+     obj[el.slice(0,(el.indexOf('|')))]= el.slice(el.indexOf('|')+1);
+     newArr.push(obj);
+   });
+   return newArr;
+}
+
 
 module.exports =  {
   addCat: addCat,
   scrapeKittyAndUpdate: scrapeKittyAndUpdate,
   updateBalance: updateBalance,
   updateSiring: updateSiring,
-  addAddress: addAddress
+  addAddress: addAddress,
+  getCat: getCat,
+  getAddress: getAddress
 }

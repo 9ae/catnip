@@ -64,7 +64,21 @@ const Web3Schema = new mongoose.Schema({
 });
 
 
+// const ChatSchema = new mongoose.Schema({
+//   party1: {
+//     type: String
+//   }
+//   party2: {
+//     type: String
+//   }
+//   history: {
+//
+//   }
+// });
+
+
 module.exports = {
   Cat: mongoose.model('cats', CatSchema),
-  Web3: mongoose.model('web3', Web3Schema)
+  Web3: mongoose.model('web3', Web3Schema),
+  Chat: mongoose.model('chat', ChatSchema)
 };
