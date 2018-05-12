@@ -72,3 +72,16 @@
     font-size: 60px;
     padding: 12px;
 }
+
+.attr {
+  list-style: none;
+}
+
+.attr li {
+  display: inline-block;
+  padding: 2px 10px;
+  background-color: #e6e6fd;
+  border-radius: 5px;
+  margin-right: 10px;
+  margin-bottom: 4px;
+}
