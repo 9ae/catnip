@@ -21,9 +21,11 @@ const CatSchema = new mongoose.Schema({
     type: [String],
     default: []
   },
-  parents:{
-    type: [Number],
-    default: []
+  matron:{
+    type: Number
+  },
+  sire:{
+    type: Number
   },
   bio:{
     type: String,
@@ -39,8 +41,19 @@ const CatSchema = new mongoose.Schema({
   cooldown:{
     type: Number
   },
+  cooldownindex:{
+    type: Number
+  },
   generation: {
     type: Number
+  }
+  liked: {
+    type: [Number],
+    default: []
+  }
+  disliked: {
+    type: [Number],
+    default: []
   }
 });
 

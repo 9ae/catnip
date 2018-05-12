@@ -23,7 +23,9 @@ const scrapeKitty = async (kittyID) => {
 			username: jsonRes.owner.nickname,
 			cattributes: cattributes,
 			bio: jsonRes.bio,
-			birthtime: jsonRes.created_at
+			birthtime: jsonRes.created_atls,
+			cooldown: jsonRes.status.cooldown, 
+			cooldownIndex: jsonRes.status.cooldownIndex
 		};  
 	}).catch((err) => {
 		console.log(err)
