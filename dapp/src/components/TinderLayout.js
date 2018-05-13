@@ -3,8 +3,6 @@ import Card from './Card';
 import './TinderLayout.css';
 import request from 'superagent';
 
-<<<<<<< HEAD
-
 const API_ROOT = require('../API_ROOT').API_ROOT; 
 const MOCK_KITTY_ID = 121638; 
 
