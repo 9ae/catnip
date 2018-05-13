@@ -71,8 +71,7 @@ const addAccept = (msg)=>{
   console.log("Accounts",window.web3.eth.getAccounts(function(err, res){ console.log(res) }));
   window.web3.eth.getAccounts().then(accs=>{
     window.web3.eth.sign(msg,accs[0]);
-  })
-
+  });
 }
 
 const addReject = data =>{
