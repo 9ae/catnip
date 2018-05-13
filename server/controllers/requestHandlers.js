@@ -36,7 +36,7 @@ const addCat = (kittyID, address) => {
 
 	  if(catInDB){
 	  	newCat.isNew = false;
-	  }else{
+	  } else{
 	  	newCat.isNew = true;
 	  }
 
@@ -116,7 +116,7 @@ const handleGetKittiesToDisplay = (req, res) => {
                 });
         })
         .catch((err) => {
-        	console.log(err); 
+        	console.log(err);
             res.status(401).send({
                 error: err
             })
@@ -124,30 +124,31 @@ const handleGetKittiesToDisplay = (req, res) => {
 }
 
 const handleVoteOnKitty = (req, res) => {
+		console.log('voting!');
 	  const me = req.body.myid;
 	  const mate = req.body.partnerid;
 	  const vote = parseInt(req.body.vote) > 0 ? 'liked' : 'disliked';
-		Cat.findById(me).then(cat => console.log(cat));
 		if (vote == 'liked') {
-			Cat.findByIdAndUpdate(me, {$push: {vote: mate}, $push: {'matched': mate}})
-			.then(cat => console.log(cat))
+			Cat.findByIdAndUpdate(me, {$push: {liked: mate}})
+			.then(cat => {
+				console.log(cat);
+				return Cat.update({_id: mate, liked: {$in: {me}}}, {$push: {matched: me}});
+			})
+			.then(cat => {
+				if (cat.nModified != 0) {
+					Cat.findByIdAndUpdate(me, {$push: {matched: mate}})
+					res.json({'match': mate});
+				}
+			})
 			.catch((err) => {res.status(401).send({error: err})});
 		} else {
-			Cat.findByIdAndUpdate(me, {$push:{vote: mate}})
+			Cat.findByIdAndUpdate(me, {$push:{disliked: mate}})
 			.then(cat => console.log(cat))
 			.catch((err) => {res.status(401).send({error: err})});
 		}
 }
 
-function separate(arr) {
-   let newArr = [];
-   arr.forEach(el => {
-     const obj = {};
-     obj[el.slice(0,(el.indexOf('|')))]= el.slice(el.indexOf('|')+1);
-     newArr.push(obj);
-   });
-   return newArr;
-}
+
 
 module.exports = {
 	handleGetKittyList : handleGetKittyList,
