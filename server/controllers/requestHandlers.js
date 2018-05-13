@@ -66,6 +66,7 @@ const handleGetKittyList = (req, res) => {
 					return cats.map(cat => ({
 						name: cat.name,
 						id: cat._id,
+						img: img,
 						listed: cat.listed,
 						siring: cat.siring,
 						price: cat.price
@@ -92,7 +93,7 @@ const handleUpdateKittyListing = (req, res) => {
 }
 
 const handleGetKittiesToDisplay = (req, res) => {
-    const me = req.query.id;
+    const me = req.query.kittyID;
 
     Cat.findById(me)
         .then(cat => {
