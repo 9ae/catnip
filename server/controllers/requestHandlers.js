@@ -9,6 +9,7 @@ const addCat = (kittyID, address) => {
 	return Promise.all([scraper(kittyID, address), Cat.findById(kittyID)])
 	.then((res) => {
 
+	  console.log('adding cats');
 	  const scrapeData = res[0];
 	  const catInDB = res[1];
 
@@ -35,7 +36,7 @@ const addCat = (kittyID, address) => {
 	  }
 
 	  const newCat = new Cat(data);
-
+  		console.log(catInDB); 
 	  if(catInDB){
 	  	newCat.isNew = false;
 	  } else{
@@ -106,15 +107,13 @@ const handleGetKittiesToDisplay = (req, res) => {
 
     Cat.findById(me)
         .then(cat => {
-            let disliked = [];
-            disliked = cat.disliked;
-            disliked.push(me);
-            disliked.concat(cat.liked);
-            console.log('jaja' + JSON.stringify(disliked))
+            //let disliked = [];
+            //disliked = cat.disliked;
+            //disliked.push(me);
+            //disliked.concat(cat.liked);
+            //console.log('jaja' + JSON.stringify(disliked))
             Cat.find({
-                    _id: {
-                        $nin: disliked
-                    }
+   
                 })
                 .limit(20)
                 .exec()
