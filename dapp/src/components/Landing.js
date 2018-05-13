@@ -54,9 +54,9 @@ class Landing extends Component {
 
   render() {
     const catShow = this.state.userCats.filter((el) => el.img).map( el => {
-        <div>
+      return  <div>
             <img src={el.img ? el.img : ''}/>
-            <p className="legend">Legend 1</p>
+            <p className="legend">{el.name}</p>
         </div>
       }
     );
@@ -65,25 +65,19 @@ class Landing extends Component {
 
 
     return (
-    <div className="tbg">
-      <div className="theader">
-        <i className="fa fa-cog" aria-hidden="true"></i>
-        <i className="fa fa-comments" aria-hidden="true"></i>
-        <div className="tlogo">
-          Catnip &lt;3
-        </div>
-      </div>
-      <div className="tbgwrap">
+    <div className="container landing">
+      <div className="wrapper">
         <h2>Choose your kitty</h2>
         <Carousel>
             {catShow}
         </Carousel>
-        <div>Price</div>
+        <div className="full center price show">
+          <label for="price">Price (ether)</label>
+          <input type="number" id="price" placeholder="100" />
+        </div>
       </div>
-
-      <div className="flex-container">
-        <div className = "profileButtons">Settings</div>
-        <div className = "ProfileButtons">Profile</div>
+      <div className="full center">
+        <button type="submit">Meowtch Me!</button>
       </div>
     </div>
     );
