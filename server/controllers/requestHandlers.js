@@ -48,8 +48,8 @@ const handleUpdateKittyListing = (req, res) => {
 
 	console.log(req.body); 
 	Cat.findByIdAndUpdate(req.body.kittyID, {
-		siring: req.body.siring, 
-		price: req.body.price, 
+		siring: req.body.siring,
+		price: req.body.price,
 		listed: req.body.listed
 	}, {upsert:true})
 	.then((r) => {
