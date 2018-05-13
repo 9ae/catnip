@@ -4,6 +4,8 @@ const router = express.Router();
 const DBController =  require('../controllers/db.controller.js');
 const requestHandler = require('../controllers/requestHandlers'); 
 
+
+console.log('adding routes')
 // get the cat
 router.route('/api/getCat').get(DBController.getCat);
 

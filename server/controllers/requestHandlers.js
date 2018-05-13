@@ -4,7 +4,7 @@ const Cat = require('../models/kitties.models').Cat;
 
 
 const handleGetKittyList = (req, res) => {
-
+	console.log('handling get kitty'); 
 	const address = req.query.address; 
 	const getKittiesURL = 'https://api.cryptokitties.co/kitties?owner_wallet_address='; 
 
