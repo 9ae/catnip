@@ -1,6 +1,6 @@
 const dbController = require('./db.controller'); 
 const request = require('request-promise-native'); 
-
+const Cat = require('../models/kitties.models').Cat;
 
 
 const handleGetKittyList = (req, res) => {
@@ -13,12 +13,30 @@ const handleGetKittyList = (req, res) => {
 			const res = JSON.parse(r); 
 			const kitties = res.kitties.map((kitty) => {
 				return {
-					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id
+					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
 					id: kitty.id 
 				}; 
 			});
 
-			 
+			const updateKitty = (kitty) => {
+				return Cat.findByID(kitty.id).then((cat) => {
+					if(cat){
+						kitty.listed = cat.listed; 
+						kitty.siring = cat.siring; 
+						kitty.price = cat.price; 
+					}else{
+						kitty.listed = false; 
+						kitty.siring = false; 
+						kitty.price = 0; 
+					}
+					return kitty; 
+				});
+			};
+
+			return Promise.all(kitties.map(kitty => updateKitty(kitty))).
+				then((res) => {
+					console.log(res); 
+				})
 
 		})
 
@@ -30,19 +48,32 @@ const handleUpdateKittyListing = (req, res) => {
 };
 
 const handleGetKittiesToDisplay = (req, res) => {
-
-
+	  const me = req.body.id;
+	  Cat.findById(me)
+	  .then(cat => {
+	    const disliked = cat.disliked;
+	    disliked.push(me);
+			disliked.push(cat.liked);
+	    Cat.find({_id: {$not : {$in : disliked}}})
+	    .limit(20)
+	    .then(catList => res.json(catList))
+	    .catch((err) => {res.status(401).send({error: err})});
+	  })
+	  .catch((err) => {res.status(401).send({error: err})});
 };
 
 const handleVoteOnKitty = (req, res) => {
+	  const me = req.body.idme;
+	  const mate = req.body.idmate;
+	  const vote = parseInt(req.body.vote) > 0 ? 'liked' : 'disliked';
 
-
+	  Cat.findByIdAndUpdate(me, {vote: mate})
 };
 
 
 module.exports = {
-	handleGetKittyList : handleGetKittyList, 
+	handleGetKittyList : handleGetKittyList,
 	handleUpdateKittyListing: handleUpdateKittyListing,
 	handleGetKittiesToDisplay : handleGetKittiesToDisplay,
 	handleVoteOnKitty : handleVoteOnKitty
-}; 
+};
