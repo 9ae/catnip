@@ -9,7 +9,15 @@ class TinderLayout extends Component {
     super(props);
     this.state = {
       currentCatId: null
+      catArray: [];
     }
+
+    fetch("/api/getKittiesToDisplay?kittyID=20").then(result => {
+      return results.json();
+    }).then( data => {
+        this.setState({catArray: data});
+        this.setState(currentCatId: catArray.pop());
+    })
   }
 
   likeCurrent = () => {
@@ -22,10 +30,19 @@ class TinderLayout extends Component {
 
   skipCat = (catId) => {
     console.log(`swiped LEFT on ${catId}`);
+
   }
 
   likeCat = (catId) => {
     console.log(`swiped RIGHT on ${catId}`);
+  }
+
+  nextCat = () => {
+    this.setState((prevState, props) => {
+        nextCatId = catArray.pop;
+  return {currentCatId: nextCatId};
+  };
+    );
   }
 
   render() {
@@ -61,3 +78,4 @@ class TinderLayout extends Component {
 }
 
 export default TinderLayout;
+//[{ name: [string], cattributes: [string], imgUrl: [string], price: [number] }]
