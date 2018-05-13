@@ -110,27 +110,52 @@ componentDidMount(){
   else this.setState({user:localStorage.getItem("username")});
 }
 
-checkBalance(){
+checkBalance(bid){
+ bid = parseFloat(bid);
+ if(bid <=0) return Promise.reject(false);
+ console.log("bid",bid);
+
+ const balanceIsSufficient = (balance,gp,bid) => {
+   //console.log(balance);
+   balance = parseFloat(window.web3.utils.fromWei(balance, 'ether'));
+   //console.log("Balance",balance);
+   let fee = parseInt(gp)*parseInt(this.state.gas);
+   console.log("fee",fee.toString());
+   fee = parseFloat(window.web3.utils.fromWei(fee.toString(),"ether"));
+   //console.log("bid2",bid,typeof(fee));
+   console.log("check add", fee+bid);
+  //console.log("fee",fee.toString());
+  console.log("check",balance >(bid),balance,(bid));
+   return balance > (bid+fee);
+
+ };
+
   let amount = this.state.message;
   let gas = this.state.gas;
-  return new Promise((resolve,reject)=>{
-    window.web3.eth.getGasPrice().then(gp=>{
-      window.web3.eth.getAccounts().then(accounts=>{
+  let gasPrice;
+
+    return window.web3.eth.getGasPrice().then((gp)=>{
+      gasPrice = gp;
+      return Promise.resolve()
+    }).then(() => {console.log(gasPrice);
+      return window.web3.eth.getAccounts();
+    }).then((accounts) => {
+      return Promise.all(accounts.map(acc => window.web3.eth.getBalance(acc)));
+    }).then((balances) => {
+      return balances.map(balance => {return balanceIsSufficient(balance,gasPrice,bid)});
+    }).then((sufficients) => {
+      return sufficients.reduce((a, b) => a || b, false);
+    })
+      /**
+      winow.web3.eth.getAccounts().then(accounts=>{
         accounts.map(account=>{
           window.web3.eth.getBalance(account).then(balance=>{
-            balance = window.web3.utils.fromWei(balance, 'ether');
-            console.log("Balance",balance);
-            let fee= parseInt(gp)*parseInt(gas);
-            fee = window.web3.utils.fromWei(fee.toString(),"ether");
 
-           console.log("fee",fee.toString());
-            if(balance<(fee+balance)) reject("Insufficient Funds to Bid this price");
+
           });
-          resolve("good");
         });
       });
-    });
-  });
+      **/
 }
 
 safari(){
@@ -151,11 +176,12 @@ handleChange(event){
 
 handleSubmit(e){
   e.preventDefault();
-  this.checkBalance().then(truth=>{
-    this.sendMsg(e);
+  this.checkBalance(this.state.message).then(truth=>{
+    //console.log("truth",truth);
+    if(truth){this.sendMsg(e);}
+    else  alert("Insuffient Funds to Send Bid");
   }).catch(err =>{
-    alert(err);
-  })
+  });
 }
 
 getMsgCount(){
@@ -176,7 +202,9 @@ getMsgCount(){
 
   sendAccept = (ev) => {
     ev.preventDefault();
-    this.socket.emit('SEND_ACCEPT');
+    let truth = this.checkBalance(this.state.message);
+    if(truth) this.socket.emit('SEND_ACCEPT');
+    else alert("Insuffient Funds to Accept Bid");
   }
 
   sendReject = (ev) => {
