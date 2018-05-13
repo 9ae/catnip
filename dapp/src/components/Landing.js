@@ -2,23 +2,61 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Carousel } from 'react-responsive-carousel';
 import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
+// const Web3 = require('web3');
+
+const API_ROOT = require('../API_ROOT').API_ROOT;
 
 class Landing extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
+      address: '',
       userCats: []
     }
+  }
 
-    fetch('/api/getKittyList')
-    .then(results => {
-      return results.json();
-    }).then( data => {
+  // componentWillMount(){
+  //    window.addEventListener('load', function () {
+  //      if (typeof web3 !== 'undefined') {
+  //          window.web3 = new Web3(window.web3.currentProvider)
+  //          if (window.web3.currentProvider.isMetaMask === true) {
+  //              window.web3.eth.getAccounts((error, accounts) => {
+  //                  if (accounts.length === 0) {
+  //                      // there is no active accounts in MetaMask
+  //                  }
+  //                  else {
+  //                      // It's ok
+  //                  }
+  //              });
+  //          } else {
+  //              // Another web3 provider
+  //          }
+  //      } else {
+  //          alert("App will not work if MetaMask is not installed");
+  //
+  //      }
+  //   });
+  // }
+
+  componentDidMount(){
+    // const acc = window.web3.eth.getAccounts()[0];
+    const acc = '0x7Ce0448B0FAFAB6cAce981fFFA967cf380A2cc33';
+    this.setState({address: acc});
+    fetch('/api/getKittyList',{
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: "POST",
+      body: JSON.stringify({address: this.state.address})
+    })
+    .then( data => {
         console.log(data)
         this.setState({userCats: data});
     })
   }
+
   render() {
     return (
     <div className="tbg">
