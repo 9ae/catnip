@@ -77,7 +77,7 @@ class Landing extends Component {
         </div>
       </div>
       <div className="full center">
-        <button type="submit">Meowtch Me!</button>
+        <a href='/landing' ><button type="submit">Meowtch Me!</button></a>
       </div>
     </div>
     );
