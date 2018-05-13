@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Card from './Card';
-import './Profile.css';
 
 class TinderLayout extends Component {
 

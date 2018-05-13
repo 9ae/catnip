@@ -41,51 +41,43 @@ class Landing extends Component {
 
   componentDidMount(){
     // const acc = window.web3.eth.getAccounts()[0];
-    console.log('COMPONENT DID MOOOOOUNTTTT!!!!!');
     const acc = '0x7Ce0448B0FAFAB6cAce981fFFA967cf380A2cc33';
     this.setState({address: acc});
     request
-    .post(API_ROOT+'/api/getKittyList')
-    .send({'address': this.state.address})
+    .get(API_ROOT+'/api/getKittyList?address='+this.state.address)
     .set('accept', 'json')
     .then( data => {
         console.log(data);
-        this.setState({userCats: data});
+        this.setState({userCats: data.body});
     })
   }
 
   render() {
-    return (
-    <div className="tbg">
-      <div className="theader">
-        <i className="fa fa-cog" aria-hidden="true"></i>
-        <i className="fa fa-comments" aria-hidden="true"></i>
-        <div className="tlogo">
-          Catnip &lt;3
+    const catShow = this.state.userCats.filter((el) => el.img).map( el => {
+      return  <div>
+            <img src={el.img ? el.img : ''}/>
+            <p className="legend">{el.name}</p>
         </div>
-      </div>
-      <div className="tbgwrap">
+      }
+    );
+
+    console.log(catShow)
+
+
+    return (
+    <div className="container landing">
+      <div className="wrapper">
         <h2>Choose your kitty</h2>
         <Carousel>
-                        <div>
-                            <img src="assets/1.jpeg" />
-                            <p className="legend">Legend 1</p>
-                        </div>
-                        <div>
-                            <img src="assets/2.jpeg" />
-                            <p className="legend">Legend 2</p>
-                        </div>
-                        <div>
-                            <img src="assets/3.jpeg" />
-                            <p className="legend">Legend 3</p>
-                        </div>
+            {catShow}
         </Carousel>
-        <div>Price</div>
+        <div className="full center price show">
+          <label for="price">Price (ether)</label>
+          <input type="number" id="price" placeholder="100" />
+        </div>
       </div>
-
-      <div className="flex-container">
-        <div className = "profileButtons">Settings</div>
-        <div className = "ProfileButtons">Profile</div>
+      <div className="full center">
+        <a href='/landing' ><button type="submit">Meowtch Me!</button></a>
       </div>
     </div>
     );
