@@ -20,8 +20,7 @@ const handleGetKittyList = (req, res) => {
 			});
 
 			const updateKitty = (kitty) => {
-				return Cat.findById(kitty.id).then((cat) => {
-
+				return Cat.findByIdAndUpdate(kitty.id).then((cat) => {
 					if(cat){
 						kitty.listed = cat.listed;
 						kitty.siring = cat.siring;
@@ -37,7 +36,9 @@ const handleGetKittyList = (req, res) => {
 
 			Promise.all(kitties.map(kitty => updateKitty(kitty)))
 		    .then(catList => res.json(catList))
-	    	.catch((err) => {res.status(401).send({error: err})});
+	    	.catch((err) => {
+	    		console.log(err)
+	    		res.status(401).send({error: err})});
 
 		})
 
@@ -45,14 +46,19 @@ const handleGetKittyList = (req, res) => {
 
 const handleUpdateKittyListing = (req, res) => {
 
+	console.log(req.body); 
 	Cat.findByIdAndUpdate(req.body.kittyID, {
 		siring: req.body.siring, 
 		price: req.body.price, 
 		listed: req.body.listed
-	})
-	.then((err) => {re.sstatus(200).send()})
-	.catch((err) => {res.status(401).send({error: err})});
-
+	}, {upsert:true})
+	.then((r) => {
+		console.log(r); 
+		res.status(200).send()})
+	.catch((err) => {
+		console.log(err)
+		res.status(401).send({error: err})
+	});
 };
 
 const handleGetKittiesToDisplay = (req, res) => {
