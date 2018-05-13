@@ -22,7 +22,7 @@ io.on('connection', socket => {
     })
 
   socket.on('SEND_ACCEPT', function(data){
-    console.log("Accepted");
+    console.log(data);
       io.emit('RECEIVE_ACCEPT',data);
   });
 

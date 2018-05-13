@@ -1,23 +1,27 @@
 // import packages
 import React, { Component } from 'react'
 import io from 'socket.io-client';
+import kittyLogic from './kittyLogic';
 var Web3 = require('web3');
 
-function newBlob(given_price,user,msg_count){
+
+
+function newBlob(given_price,user,msg_count,sig){
 return {
     message_id: msg_count,
     price: given_price,
     sender: user,
-    status: "pending"
+    status: "pending",
+    signature: sig
   }
 }
 
+
 // Making the App component
+
 class App extends Component {
   constructor() {
-    super()
-
-
+    super();
     this.state = {
       user:"",
       endpoint: "http://localhost:4001", // this is where we are connecting to with sockets
@@ -26,7 +30,8 @@ class App extends Component {
       blobStyle : {border:"1px solid orange"},
       message:"",
       load: false,
-      gas:4
+      gas:4,
+      pay_account:""
     }
     this.socket = io('localhost:4001');
     this.handleAccept = this.handleAccept.bind(this);
@@ -40,6 +45,7 @@ class App extends Component {
     this.safari = this.safari.bind(this);
     this.checkBalance = this.checkBalance.bind(this);
 
+
     this.socket.on('RECEIVE_MESSAGE', function(data){
     addMessage(data);
   });
@@ -51,8 +57,8 @@ class App extends Component {
     addReject(data)
   });
 
-  this.socket.on('RECEIVE_ACCEPT',function(){
-    addAccept();
+  this.socket.on('RECEIVE_ACCEPT',function(msg){
+    addAccept(msg);
   })
 
   const addMessage = data => {
@@ -61,8 +67,12 @@ class App extends Component {
       //console.log(this.state.messages);
     };
 
-const addAccept = ()=>{
-  alert("Accepted!");
+const addAccept = (msg)=>{
+  console.log("Accounts",window.web3.eth.getAccounts(function(err, res){ console.log(res) }));
+  window.web3.eth.getAccounts().then(accs=>{
+    window.web3.eth.sign(msg,accs[0]);
+  })
+
 }
 
 const addReject = data =>{
@@ -79,11 +89,9 @@ const addReject = data =>{
 }
 
 componentWillMount(){
-
   window.addEventListener('load', function () {
     if (typeof web3 !== 'undefined') {
         window.web3 = new Web3(window.web3.currentProvider)
-
         if (window.web3.currentProvider.isMetaMask === true) {
             window.web3.eth.getAccounts((error, accounts) => {
                 if (accounts.length === 0) {
@@ -110,13 +118,16 @@ componentDidMount(){
   else this.setState({user:localStorage.getItem("username")});
 }
 
+
 checkBalance(bid){
  bid = parseFloat(bid);
- if(bid <=0) return Promise.reject(false);
+ if(bid <=0){
+   alert("Cannot send a bid less than or equal to 0");
+  return Promise.reject(false);}
  console.log("bid",bid);
 
  const balanceIsSufficient = (balance,gp,bid) => {
-   //console.log(balance);
+   console.log("balance",balance);
    balance = parseFloat(window.web3.utils.fromWei(balance, 'ether'));
    //console.log("Balance",balance);
    let fee = parseInt(gp)*parseInt(this.state.gas);
@@ -127,7 +138,6 @@ checkBalance(bid){
   //console.log("fee",fee.toString());
   console.log("check",balance >(bid),balance,(bid));
    return balance > (bid+fee);
-
  };
 
   let amount = this.state.message;
@@ -145,17 +155,7 @@ checkBalance(bid){
       return balances.map(balance => {return balanceIsSufficient(balance,gasPrice,bid)});
     }).then((sufficients) => {
       return sufficients.reduce((a, b) => a || b, false);
-    })
-      /**
-      winow.web3.eth.getAccounts().then(accounts=>{
-        accounts.map(account=>{
-          window.web3.eth.getBalance(account).then(balance=>{
-
-
-          });
-        });
-      });
-      **/
+    });
 }
 
 safari(){
@@ -164,7 +164,7 @@ safari(){
 
 handleAccept(bid){
   this.checkBalance(bid).then(truth=>{
-    if(truth) this.sendAccept();
+    if(truth) this.sendAccept(bid);
     else alert("Insuffient Funds to Accept Bid");
   })
 }
@@ -180,12 +180,13 @@ handleChange(event){
 handleSubmit(e){
   e.preventDefault();
   this.checkBalance(this.state.message).then(truth=>{
-    //console.log("truth",truth);
+    console.log("truth",truth);
     if(truth){this.sendMsg(e);}
-
+    else alert("Insuffient Funds to Send Bid");
   }).catch(err=>{
-    alert("Insuffient Funds to Send Bid");
-  });
+    console.log(err);
+    alert("Insuffient Funds to Send Bid err");
+  })
 }
 
 getMsgCount(){
@@ -199,15 +200,20 @@ getMsgCount(){
   sendMsg = (ev) => {
     ev.preventDefault();
     let count = this.getMsgCount();
-    this.socket.emit('SEND_MESSAGE',newBlob(this.state.message,this.state.user,count));
+    let blob = newBlob(this.state.message,this.state.user,count);
+    //let sig = window.web3.eth.sign(JSON.stringify(this.toHex(blob)),window.web3.eth.accounts[0]);
+    console.log("sig",window.web3.utils.toHex(JSON.stringify(blob)));
+    this.socket.emit('SEND_MESSAGE',blob);
     this.setState({message: ''});
     // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
 
-  sendAccept = () => {
-    let truth = this.checkBalance(this.state.message);
-    if(truth) this.socket.emit('SEND_ACCEPT');
-    else alert("Insuffient Funds to Accept Bid");
+  sendAccept = (bid) => {
+    let bidd = parseFloat(bid);
+    console.log("bidd",bidd);
+    //let a = window.web3.utils.toHex(bidd);
+
+    this.socket.emit('SEND_ACCEPT',"0x66666");
   }
 
   sendReject = (ev) => {
@@ -218,8 +224,12 @@ getMsgCount(){
   }
 
   render() {
+
     //console.log("Window web3",window.web3.eth);
-    //console.log("Accounts",window.web3.eth.getAccounts(console.log));
+    console.log("Accounts",window.web3.eth.getAccounts(function(err, res){ console.log(res) }));
+    //console.log(window.web3.toHex('hello'));
+    //let a =window.web3.toHex('hello');
+
     if(this.state.load) return <div>Please use a browser with MetaMask Installed</div>
     return (
       <div style={{ textAlign: "center" }}>
@@ -244,7 +254,7 @@ getMsgCount(){
               <span>{blob.price}</span><br/>
               <span>{blob.status}</span>
               <div>
-                <span onClick={()=>{this.handleAccept(blob.price)}}>✔</span>
+                <span onClick={()=>{console.log(typeof(blob.price),"bidjfs",blob.price);this.handleAccept(blob.price.toString())}}>✔</span>
                 &nbsp;|&nbsp;
                 <span onClick={this.handleReject}>ｘ</span>
               </div><br/>
@@ -259,4 +269,4 @@ getMsgCount(){
   }
 }
 
-export default App
+export default App;
