@@ -20,7 +20,10 @@ const handleGetKittyList = (req, res) => {
 			});
 
 			const updateKitty = (kitty) => {
-				return Cat.findByID(kitty.id).then((cat) => {
+				return Cat.findById(kitty.id).then((cat) => {
+
+					console.log('getting kitty'); 
+
 					if(cat){
 						kitty.listed = cat.listed;
 						kitty.siring = cat.siring;
@@ -34,11 +37,13 @@ const handleGetKittyList = (req, res) => {
 				});
 			};
 
-			return Promise.all(kitties.map(kitty => updateKitty(kitty))).
-				then((res) => {
-					console.log(res);
-				})
-
+			Promise.all(kitties.map(kitty => updateKitty(kitty)))
+			.then((res) => {
+				console.log(res); 
+			})
+			.catch((err) => {
+				console.log(err); 
+			}); 
 		})
 
 }
