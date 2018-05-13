@@ -1,6 +1,7 @@
 // import packages
 import React, { Component } from 'react'
 import io from 'socket.io-client';
+var Web3 = require('web3');
 
 function newBlob(given_price,user,msg_count){
 return {
@@ -16,13 +17,16 @@ class App extends Component {
   constructor() {
     super()
 
+
     this.state = {
       user:"",
       endpoint: "http://localhost:4001", // this is where we are connecting to with sockets
       chat_history:[],
       message_count:0,
       blobStyle : {border:"1px solid orange"},
-      message:""
+      message:"",
+      load: false,
+      gas:4
     }
     this.socket = io('localhost:4001');
     this.handleAccept = this.handleAccept.bind(this);
@@ -33,6 +37,8 @@ class App extends Component {
     this.sendMsg = this.sendMsg.bind(this);
     this.sendReject = this.sendReject.bind(this);
     this.sendAccept = this.sendAccept.bind(this);
+    this.safari = this.safari.bind(this);
+    this.checkBalance = this.checkBalance.bind(this);
 
     this.socket.on('RECEIVE_MESSAGE', function(data){
     addMessage(data);
@@ -41,7 +47,7 @@ class App extends Component {
     //this.socket.on('RECIEVE_ACCEPT',function(data){sendAccept()});
 
   this.socket.on('RECEIVE_REJECT',function(data){
-    console.log("recieving");
+    //console.log("recieving");
     addReject(data)
   });
 
@@ -50,9 +56,9 @@ class App extends Component {
   })
 
   const addMessage = data => {
-      console.log("Data",data);
+      //console.log("Data",data);
       this.setState({chat_history: [...this.state.chat_history,data]});
-      console.log(this.state.messages);
+      //console.log(this.state.messages);
     };
 
 const addAccept = ()=>{
@@ -60,19 +66,75 @@ const addAccept = ()=>{
 }
 
 const addReject = data =>{
-  console.log("Rejected Data",data);
+  //console.log("Rejected Data",data);
   data.status="Rejected";
   let chat = this.state.chat_history;
   chat.splice(-1,1);
   chat.push(data);
   this.setState({chat_history:[...this.state.chat_history]});
-  console.log(chat);
+  //console.log(chat);
 }
 
+
+}
+
+componentWillMount(){
+
+  window.addEventListener('load', function () {
+    if (typeof web3 !== 'undefined') {
+        window.web3 = new Web3(window.web3.currentProvider)
+
+        if (window.web3.currentProvider.isMetaMask === true) {
+            window.web3.eth.getAccounts((error, accounts) => {
+                if (accounts.length === 0) {
+                    // there is no active accounts in MetaMask
+                }
+                else {
+                    // It's ok
+                }
+            });
+        } else {
+            // Another web3 provider
+        }
+    } else {
+        alert("App will not work if MetaMask is not installed");
+
+    }
+});
 }
 
 componentDidMount(){
-  this.setState({user:localStorage.getItem("username")})
+  if(window.web3===undefined){
+    this.setState({user:localStorage.getItem("username"),load:true});
+  }
+  else this.setState({user:localStorage.getItem("username")});
+}
+
+checkBalance(){
+  let amount = this.state.message;
+  let gas = this.state.gas;
+  return new Promise((resolve,reject)=>{
+    window.web3.eth.getGasPrice().then(gp=>{
+      window.web3.eth.getAccounts().then(accounts=>{
+        accounts.map(account=>{
+          window.web3.eth.getBalance(account).then(balance=>{
+            balance = window.web3.utils.fromWei(balance, 'ether');
+            console.log("Balance",balance);
+            let fee= parseInt(gp)*parseInt(gas);
+            fee = window.web3.utils.fromWei(fee.toString(),"ether");
+
+           console.log("fee",fee.toString());
+            if(balance<(fee+balance)) reject("Insufficient Funds to Bid this price");
+          });
+          resolve("good");
+        });
+      });
+    });
+  });
+}
+
+safari(){
+  this.setState({load:true});
 }
 
 handleAccept(ev){
@@ -89,12 +151,16 @@ handleChange(event){
 
 handleSubmit(e){
   e.preventDefault();
-  this.sendMsg(e);
+  this.checkBalance().then(truth=>{
+    this.sendMsg(e);
+  }).catch(err =>{
+    alert(err);
+  })
 }
 
 getMsgCount(){
   let current = this.state.message_count+1;
-  console.log(current);
+  //console.log(current);
   this.setState({message_count:current});
   return current;
 }
@@ -121,12 +187,14 @@ getMsgCount(){
   }
 
   render() {
-
+    //console.log("Window web3",window.web3.eth);
+    //console.log("Accounts",window.web3.eth.getAccounts(console.log));
+    if(this.state.load) return <div>Please use a browser with MetaMask Installed</div>
     return (
       <div style={{ textAlign: "center" }}>
         {this.state.chat_history.map(blob=>{
-          console.log("blob",blob,this.state.chat_history[this.state.chat_history.length-1]!==blob);
-          if(this.state.chat_history[this.state.chat_history.length-1]!==blob || blob.status=="Rejected"){
+
+          if(this.state.chat_history[this.state.chat_history.length-1]!==blob || blob.status==="Rejected"){
             return (
               <div key={blob.message_id}>
                 <span>{blob.message_id}:</span>&nbsp;
