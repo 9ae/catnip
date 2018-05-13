@@ -5,7 +5,7 @@ import request from 'superagent';
 
 
 const API_ROOT = require('../API_ROOT').API_ROOT; 
-const MOCK_KITTY_ID = 122587; 
+const MOCK_KITTY_ID = 121638; 
 
 class TinderLayout extends Component {
 
@@ -31,27 +31,6 @@ class TinderLayout extends Component {
             this.setState({currentCat : currentCat}) 
           }); 
   };
-
-  /*voteOnKitty = (yes) => {
-    Params { kittyID = [number], likedKittyID = [number], liked = [boolean] }
-
-
-    if(yes){
-      fetch('/api/voteOnKitty', {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify({
-    kittyID: 'yourValue',
-    likedKittyID: 'yourOtherValue',
-    liked: yes;
-  })
-})
-    }else
-
-  }*/
 
   getNextCat = () => {
         console.log('in get next')
