@@ -81,10 +81,7 @@ const handleGetKittyList = (req, res) => {
 };
 
 const handleUpdateKittyListing = (req, res) => {
-	Cat.find().then(res => {
-		console.log(res);
-	});
-	console.log(req.body);
+
 	Cat.findByIdAndUpdate(req.body.kittyID, {
 		siring: req.body.siring,
 		price: req.body.price,
@@ -95,19 +92,35 @@ const handleUpdateKittyListing = (req, res) => {
 }
 
 const handleGetKittiesToDisplay = (req, res) => {
-	  const me = req.body.id;
-	  Cat.findById(me)
-	  .then(cat => {
-	    const disliked = [];
-			disliked = cat.disliked
-	    disliked.push(me);
-			disliked.push(cat.liked);
-	    Cat.find({_id: {$nin : disliked}})
-	    .limit(20)
-	    .then(catList => res.json(catList))
-	    .catch((err) => {res.status(401).send({error: err})});
-	  })
-	  .catch((err) => {res.status(401).send({error: err})});
+    const me = req.query.id;
+
+    Cat.findById(me)
+        .then(cat => {
+            let disliked = [];
+            disliked = cat.disliked;
+            disliked.push(me);
+            disliked.concat(cat.liked);
+            console.log('jaja' + JSON.stringify(disliked))
+            Cat.find({
+                    _id: {
+                        $nin: disliked
+                    }
+                })
+                .limit(20)
+                .exec()
+                .then(catList => res.json(catList))
+                .catch((err) => {
+                    res.status(401).send({
+                        error: err
+                    })
+                });
+        })
+        .catch((err) => {
+        	console.log(err);
+            res.status(401).send({
+                error: err
+            })
+        });
 }
 
 const handleVoteOnKitty = (req, res) => {
