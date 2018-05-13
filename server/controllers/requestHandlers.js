@@ -51,6 +51,7 @@ const addCat = (kittyID, address) => {
 const handleGetKittyList = (req, res) => {
 	console.log('handling get kitty');
 	const address = req.query.address;
+	console.log(address);
 	const getKittiesURL = 'https://api.cryptokitties.co/kitties?owner_wallet_address=';
 
 	request(getKittiesURL + address)
@@ -71,8 +72,8 @@ const handleGetKittyList = (req, res) => {
 						img: cat.img,
 						listed: cat.listed,
 						siring: cat.siring,
-						price: cat.price, 
-						liked: cat.liked, 
+						price: cat.price,
+						liked: cat.liked,
 						disliked: cat.disliked
 					}));
 				})
@@ -82,7 +83,11 @@ const handleGetKittyList = (req, res) => {
 	    			console.log(err)
 	    			res.status(401).send({error: err});
 	    		});
-		});
+		})
+		.catch((err) => {
+				console.log(err)
+				res.status(401).send({error: err});
+			});
 };
 
 const handleUpdateKittyListing = (req, res) => {

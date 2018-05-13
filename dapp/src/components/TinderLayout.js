@@ -3,9 +3,11 @@ import Card from './Card';
 import './TinderLayout.css';
 import request from 'superagent';
 
+<<<<<<< HEAD
 
 const API_ROOT = require('../API_ROOT').API_ROOT; 
 const MOCK_KITTY_ID = 121638; 
+
 
 class TinderLayout extends Component {
 
@@ -18,7 +20,6 @@ class TinderLayout extends Component {
       catArray: [],
       loading: false
     }
-    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount(){
@@ -28,8 +29,8 @@ class TinderLayout extends Component {
             const currentCat = res.body.pop();
             console.log(currentCat)
             this.setState({catArray : res.body});
-            this.setState({currentCat : currentCat}) 
-          }); 
+            this.setState({currentCat : currentCat})
+          });
   };
 
   getNextCat = () => {
@@ -39,21 +40,21 @@ class TinderLayout extends Component {
 
         if(!this.state.loading && this.state.catArray.length < 5) {
 
-          this.setState({loading : true}); 
+          this.setState({loading : true});
 
           request
           .get(API_ROOT + "/api/getKittiesToDisplay?kittyID=" + this.state.userCatId)
           .then((res) => {
             this.setState({catArray : this.state.catArray.concat(res.body)});
-            this.setState({loading : false}); 
+            this.setState({loading : false});
 
-          }); 
+          });
         }
   }
 
   sendLike = (likedKittyID, liked) => {
 
-    console.log('sending LIke'); 
+    console.log('sending LIke');
 
     request
       .post(API_ROOT + '/api/voteOnKitty')
@@ -70,12 +71,12 @@ class TinderLayout extends Component {
 
   likeCurrent = () => {
     this.sendLike(this.state.currentCat._id, true);
-    this.getNextCat(); 
+    this.getNextCat();
   }
 
   skipCurrent = () => {
     this.sendLike(this.state.currentCat._id, false);
-    this.getNextCat(); 
+    this.getNextCat();
   }
 
   skipCat = (catId) => {

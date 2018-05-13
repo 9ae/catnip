@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "fetch": "^1.1.0",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
     "react-responsive-carousel": "^3.1.37",
