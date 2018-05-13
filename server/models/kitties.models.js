@@ -18,8 +18,7 @@ const CatSchema = new mongoose.Schema({
     type: [String]
   },
   cattributes: {
-    type: [String],
-    default: []
+    type: String
   },
   matron:{
     type: Number
@@ -46,15 +45,15 @@ const CatSchema = new mongoose.Schema({
   },
   generation: {
     type: Number
-  }
+  },
   liked: {
     type: [Number],
     default: []
-  }
+  },
   disliked: {
     type: [Number],
     default: []
-  }
+  },
   matched: {
     type: [Number],
     default: []
@@ -80,10 +79,10 @@ const Web3Schema = new mongoose.Schema({
 const ChatSchema = new mongoose.Schema({
   party1: {
     type: String
-  }
+  },
   party2: {
     type: String
-  }
+  },
   history: [{
     price: {
       type: Number

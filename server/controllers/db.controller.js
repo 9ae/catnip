@@ -9,7 +9,11 @@ const mockID = 748523;
 function addCat(kittyId) {
   console.log('adding a kitty to the database!');
 
-  const scrapeData = scraper(id);
+  const scrapeData = scraper(id)
+  .then((kittyData)=> {
+    console.log('~~~~~Kitty data');
+    console.log(kittyData);
+  });
   scrapeData.cattributes = separate(scrapeData.cattributes);
 
   const data = {
@@ -145,7 +149,6 @@ function separate(arr) {
 
 module.exports =  {
   addCat: addCat,
-  scrapeKittyAndUpdate: scrapeKittyAndUpdate,
   updateBalance: updateBalance,
   updateSiring: updateSiring,
   addAddress: addAddress,

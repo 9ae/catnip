@@ -2,25 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const DBController =  require('../controllers/db.controller.js');
-const requestHandler = require('../controllers/requestHandler'); 
-
-// get the cat
-router.route('/api/getCat').get(DBController.getCat);
-
-// get the user
-router.route('/api/getUser').get(DBController.getAddress);
-
-// add a cat
-router.route('/api/addCat').post(DBController.addCat);
-
-//update a user balance
-router.route('/api/updateBalance').post(DBController.updateBalance);
-
-//update a cat's status as siring / not
-router.route('/api/updateSiring').post(DBController.updateSiring);
-
-//add an address( public key), a kitty id and a balance to db
-router.route('/api/addAddress').post(DBController.addAddress);
+const requestHandler = require('../controllers/requestHandlers');
 
 //Takes an address and returns the list of kitties owned by the user
 router.route('/api/getKittyList').get(requestHandler.handleGetKittyList);
@@ -33,6 +15,9 @@ router.route('/api/getKittiesToDisplay').get(requestHandler.handleGetKittiesToDi
 
 //yourKittyID, likedKittyID, liked/disliked
 router.route('/api/voteOnKitty').post(requestHandler.handleVoteOnKitty);
+
+//add cat NOTE: for testing
+router.route('/api/addCat').post(requestHandler.addCat);
 
 
 module.exports = router;
