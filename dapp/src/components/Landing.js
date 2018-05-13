@@ -3,20 +3,33 @@ import ReactDOM from 'react-dom';
 import { Carousel } from 'react-responsive-carousel';
 import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-class TinderLayout extends Component {
+class Landing extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      userCats: []
+    }
 
+    fetch('/api/getKittyList')
+    .then(results => {
+      return results.json();
+    }).then( data => {
+        console.log(data)
+        this.setState({userCats: data});
+    })
+  }
   render() {
     return (
-    <div class="tbg">
-      <div class="theader">
-        <i class="fa fa-cog" aria-hidden="true"></i>
-        <i class="fa fa-comments" aria-hidden="true"></i>
-        <div class="tlogo">
+    <div className="tbg">
+      <div className="theader">
+        <i className="fa fa-cog" aria-hidden="true"></i>
+        <i className="fa fa-comments" aria-hidden="true"></i>
+        <div className="tlogo">
           Catnip &lt;3
         </div>
       </div>
-      <div class="tbgwrap">
+      <div className="tbgwrap">
         <h2>Choose your kitty</h2>
         <Carousel>
                         <div>
@@ -33,14 +46,16 @@ class TinderLayout extends Component {
                         </div>
         </Carousel>
         <div>Price</div>
-        <Button>Start Meowtching!</Button>
       </div>
 
-      <div class="flex-container">
-        <div class = "profileButtons">Settings</div>
-        <div class = "ProfileButtons">Profile</div>
+      <div className="flex-container">
+        <div className = "profileButtons">Settings</div>
+        <div className = "ProfileButtons">Profile</div>
       </div>
     </div>
     );
 
   }
+}
+
+export default Landing;

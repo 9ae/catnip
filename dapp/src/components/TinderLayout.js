@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Card from './Card';
 import './TinderLayout.css';
 
-const API_ROOT = require('../API_ROOT'); 
+const API_ROOT = require('../API_ROOT');
 
 
 class TinderLayout extends Component {
@@ -17,18 +17,18 @@ class TinderLayout extends Component {
 
     console.log(API_ROOT)
     fetch(API_ROOT + "/api/getKittiesToDisplay?kittyID=20").then(results => {
-      return results.json();
+      return '';//results.json();
     }).then( data => {
         console.log(data)
         this.setState({catArray: data});
-        this.setState({currentCatId: this.state.catArray.pop()});
+        // this.setState({currentCatId: this.state.catArray.pop()});
     })
   }
 
   componentDidMount(){
     if(this.state.catArray.length < 5){
       fetch("/api/getKittiesToDisplay?kittyID=20").then(results => {
-        return results.json();
+        return ''//results.json();
       }).then( data => {
           this.setState({catArray: data});
       })
