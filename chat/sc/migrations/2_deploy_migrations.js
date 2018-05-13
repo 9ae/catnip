@@ -1,4 +1,4 @@
 const kl = artifacts.require('./kl.sol');
-module.exports = (deployer) => {
+module.exports = deployer => {
   deployer.deploy(kl);
-}
+};

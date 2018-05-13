@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import io from 'socket.io-client';
 import kittyLogic from './kittyLogic';
-import compiledContract from './build/contracts/Mate.json';
+import compiledContract from './build/contracts/kl.json';
 var Web3 = require('web3');
 
 function newBlob(given_price, user, msg_count, sig) {
@@ -76,20 +76,16 @@ class App extends Component {
       //console.log(accounts[0]);
       const contract = await new window.web3.eth.Contract(
         compiledContract.abi,
-        '0x56c47b7d4aeb70109897f48495dab12d34220981'
+        '0x3a5f6476c2b09838cfd3bb723c7b4bd83cae6cca'
       );
       //console.log(contract.options.address);
       //
 
       await contract.methods
-        .sign(accounts[1])
-        .send({ from: accounts[0], gas: 21000 });
-      //console.log(await contract.methods.A().call());
-      await contract.methods
-        .counterSign(100)
-        .send({ from: accounts[1], gas: 21000 });
-      //console.log(await contract.methods.B().call());
-      //const newToken = alert();
+        .mint(Math.floor(Math.random() * 4))
+        .send({ from: accounts[0] });
+      var tokens = await contract.methods.tokensOfOwner(accounts[0]).call();
+      alert('congrats these are your new tokens: ' + tokens);
     };
 
     const addReject = data => {
