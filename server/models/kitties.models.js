@@ -18,8 +18,7 @@ const CatSchema = new mongoose.Schema({
     type: [String]
   },
   cattributes: {
-    type: [String],
-    default: []
+    type: String
   },
   matron:{
     type: Number
@@ -58,6 +57,18 @@ const CatSchema = new mongoose.Schema({
   matched: {
     type: [Number],
     default: []
+  },
+  listed: {
+    type: Boolean, 
+    default: false
+  }, 
+  price: {
+    type: Number,
+    default: 0
+  }, 
+  siring: {
+    type: Boolean, 
+    default: false
   }
 });
 
