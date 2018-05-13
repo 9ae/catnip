@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel, Button } from 'react-responsive-carousel';
 import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 class TinderLayout extends Component {
@@ -44,3 +44,6 @@ class TinderLayout extends Component {
     );
 
   }
+}
+
+export default TinderLayout;
