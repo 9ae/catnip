@@ -22,6 +22,14 @@ mongoose.connect('mongodb://localhost/catnip', (error) => {
   //dummyData();
 });
 
+//Allows react app to load data from same origin as app
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  console.log('adding access control header');
+  next();
+});
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
