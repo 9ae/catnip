@@ -162,10 +162,9 @@ safari(){
   this.setState({load:true});
 }
 
-handleAccept(bid,ev){
-  alert(bid);
+handleAccept(bid){
   this.checkBalance(bid).then(truth=>{
-    if(truth) this.sendAccept(ev);
+    if(truth) this.sendAccept();
     else alert("Insuffient Funds to Accept Bid");
   })
 }
@@ -183,7 +182,9 @@ handleSubmit(e){
   this.checkBalance(this.state.message).then(truth=>{
     //console.log("truth",truth);
     if(truth){this.sendMsg(e);}
-    else  alert("Insuffient Funds to Send Bid");
+
+  }).catch(err=>{
+    alert("Insuffient Funds to Send Bid");
   });
 }
 
@@ -203,8 +204,7 @@ getMsgCount(){
     // socket.emit('change color', 'red', 'yellow') | you can have multiple arguments
   }
 
-  sendAccept = (ev) => {
-    ev.preventDefault();
+  sendAccept = () => {
     let truth = this.checkBalance(this.state.message);
     if(truth) this.socket.emit('SEND_ACCEPT');
     else alert("Insuffient Funds to Accept Bid");
