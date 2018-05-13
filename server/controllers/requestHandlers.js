@@ -11,7 +11,7 @@ const handleGetKittyList = (req, res) => {
 
 	request(getKittiesURL + address)
 		.then((r) => {
-			const jsonResult = JSON.parse(r); 
+			const jsonResult = JSON.parse(r);
 			const kitties = jsonResult.kitties.map((kitty) => {
 				return {
 					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
@@ -41,7 +41,7 @@ const handleGetKittyList = (req, res) => {
 
 		})
 
-};
+}
 
 const handleUpdateKittyListing = (req, res) => {
 
@@ -53,7 +53,7 @@ const handleUpdateKittyListing = (req, res) => {
 	.then((err) => {re.sstatus(200).send()})
 	.catch((err) => {res.status(401).send({error: err})});
 
-};
+}
 
 const handleGetKittiesToDisplay = (req, res) => {
 	  const me = req.body.id;
@@ -68,7 +68,7 @@ const handleGetKittiesToDisplay = (req, res) => {
 	    .catch((err) => {res.status(401).send({error: err})});
 	  })
 	  .catch((err) => {res.status(401).send({error: err})});
-};
+}
 
 const handleVoteOnKitty = (req, res) => {
 	  const me = req.body.myid;
@@ -78,40 +78,41 @@ const handleVoteOnKitty = (req, res) => {
 			Cat.findByIdAndUpdate(me, {vote: mate, $push: {'matched': mate}})
 			.then(cat => console.log(cat))
 			.catch((err) => {res.status(401).send({error: err})});
+		} else {
+			Cat.findByIdAndUpdate(me, {vote: mate})
+			.then(cat => console.log(cat))
+			.catch((err) => {res.status(401).send({error: err})});
 		}
-	  Cat.findByIdAndUpdate(me, {vote: mate})
-		.then(cat => console.log(cat))
-		.catch((err) => {res.status(401).send({error: err})});
-};
+}
 
 const addCat = (req, res) => {
   console.log('adding a kitty to the database!');
 
-  const scrapeData = scraper(req.body.kittyid);
-  scrapeData.cattributes = separate(scrapeData.cattributes);
+	const scrapeData = scraper(req.body.kittyid)
+	.then((scrapeData) => {
+	  const data = {
+	    name: scrapeData.name || null,
+	    img: scrapeData.img || null,
+	    _id: req.body.kittyid || null,
+	    username: scrapeData.username || null,
+	    owner: req.body.owner || null,
+	    cattributes: scrapeData.cattributes+ '' || null,
+	    matron: scrapeData.matron || null,
+	    sire: scrapeData.sire || null,
+	    bio: scrapeData.bio || null,
+	    birthtime: scrapeData.birthtime || null,
+	    siringwith: scrapeData.siringwith || null,
+	    cooldown: scrapeData.cooldown || null,
+	    cooldownindex: scrapeData.cooldownindex || null,
+	    generation: scrapeData.generation || null
+	  }
 
-  const data = {
-    name: scrapeData.name || null,
-    img: scrapeData.img || null,
-    _id: req.body.kittyid || null,
-    username: scrapeData.username || null,
-    owner: req.body.owner || null,
-    cattributes: scrapeData.cattributes || null,
-    matron: scrapeData.matron || null,
-    sire: scrapeData.sire || null,
-    bio: scrapeData.bio || null,
-    birthtime: scrapeData.birthtime || null,
-    siringwith: scrapeData.siringwith || null,
-    cooldown: scrapeData.cooldown || null,
-    cooldownindex: scrapeData.cooldownindex || null,
-    generation: scrapeData.generation || null
-  }
+	  const newCat = new Cat(data);
 
-
-  const newCat = new Cat(data);
-
-  return newCat.save()
-	.then(cat => res.json(cat))
+	  return newCat.save()
+	}).then((cat) => {
+		res.json(cat);
+	})
   .catch((err) => {console.log(err)});
 }
 

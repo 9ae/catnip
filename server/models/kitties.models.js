@@ -18,8 +18,7 @@ const CatSchema = new mongoose.Schema({
     type: [String]
   },
   cattributes: {
-    type: [String],
-    default: []
+    type: String
   },
   matron:{
     type: Number
