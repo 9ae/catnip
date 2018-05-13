@@ -11,12 +11,9 @@ const handleGetKittyList = (req, res) => {
 
 	request(getKittiesURL + address)
 		.then((r) => {
-<<<<<<< HEAD
 			const res = JSON.parse(r);
 			console.log(res);
-=======
-			const res = JSON.parse(r); 
->>>>>>> 6e9995efb017e6b9c43f689ac49f4b0d0cdff5c0
+			const res = JSON.parse(r);
 			const kitties = res.kitties.map((kitty) => {
 				return {
 					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
