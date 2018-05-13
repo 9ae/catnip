@@ -1,29 +1,33 @@
 import React, { Component } from 'react';
 import Card from './Card';
-
 import './TinderLayout.css';
+
+const API_ROOT = require('../API_ROOT'); 
+
 
 class TinderLayout extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      userCatId: ,
+      userCatId: null,
       currentCatId: null,
       catArray: []
     }
 
-    fetch("/api/getKittiesToDisplay?kittyID=20").then(result => {
+    console.log(API_ROOT)
+    fetch(API_ROOT + "/api/getKittiesToDisplay?kittyID=20").then(results => {
       return results.json();
     }).then( data => {
+        console.log(data)
         this.setState({catArray: data});
-        this.setState(currentCatId: catArray.pop());
+        this.setState({currentCatId: this.state.catArray.pop()});
     })
   }
 
   componentDidMount(){
-    if(catArray.length < 5){
-      fetch("/api/getKittiesToDisplay?kittyID=20").then(result => {
+    if(this.state.catArray.length < 5){
+      fetch("/api/getKittiesToDisplay?kittyID=20").then(results => {
         return results.json();
       }).then( data => {
           this.setState({catArray: data});
@@ -31,7 +35,7 @@ class TinderLayout extends Component {
     }
   }
 
-  voteOnKitty = (yes) => {
+  /*voteOnKitty = (yes) => {
     Params { kittyID = [number], likedKittyID = [number], liked = [boolean] }
 
 
@@ -50,16 +54,16 @@ class TinderLayout extends Component {
 })
     }else
 
-  }
+  }*/
 
   likeCurrent = () => {
     this.likeCat(this.state.currentCatId);
-    this.setState(currentCatId: catArray.pop());
+    this.setState({currentCatId: this.state.catArray.pop()});
   }
 
   skipCurrent = () => {
     this.skipCat(this.state.currentCatId);
-    this.setState(currentCatId: catArray.pop());
+    this.setState({currentCatId: this.state.catArray.pop()});
   }
 
   skipCat = (catId) => {
@@ -71,13 +75,13 @@ class TinderLayout extends Component {
     console.log(`swiped RIGHT on ${catId}`);
   }
 
-  nextCat = () => {
+  /*nextCat = () => {
     this.setState((prevState, props) => {
-        nextCatId = catArray.pop;
-  return {currentCatId: nextCatId};
-  };
-    );
+        nextCatId == this.state.catArray.pop;
+  return {currentCatId: this.state.nextCatId};
   }
+    );
+  }*/
 
   render() {
     return (

@@ -12,6 +12,7 @@ const Routes = () => (
   <Router>
   <div>
     <Route exact path="/" component={App}/>
+    <Route exact path="/landing" component={App}/>
     <Route exact path="/cat" component={CatDetails} />
   </div>
   </Router>
