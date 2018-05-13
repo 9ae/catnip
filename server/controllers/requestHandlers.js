@@ -1,7 +1,8 @@
 const dbController = require('./db.controller');
 const request = require('request-promise-native');
 const Cat = require('../models/kitties.models').Cat;
-
+const scraper = require('./scraper').scrapeKitty;
+const mockID = 748523;
 
 const handleGetKittyList = (req, res) => {
 	console.log('handling get kitty');
@@ -83,10 +84,52 @@ const handleVoteOnKitty = (req, res) => {
 		.catch((err) => {res.status(401).send({error: err})});
 };
 
+const addCat = (req, res) => {
+  console.log('adding a kitty to the database!');
+
+  const scrapeData = scraper(req.body.kittyid);
+  scrapeData.cattributes = separate(scrapeData.cattributes);
+
+  const data = {
+    name: scrapeData.name || null,
+    img: scrapeData.img || null,
+    _id: req.body.kittyid || null,
+    username: scrapeData.username || null,
+    owner: req.body.owner || null,
+    cattributes: scrapeData.cattributes || null,
+    matron: scrapeData.matron || null,
+    sire: scrapeData.sire || null,
+    bio: scrapeData.bio || null,
+    birthtime: scrapeData.birthtime || null,
+    siringwith: scrapeData.siringwith || null,
+    cooldown: scrapeData.cooldown || null,
+    cooldownindex: scrapeData.cooldownindex || null,
+    generation: scrapeData.generation || null
+  }
+
+
+  const newCat = new Cat(data);
+
+  return newCat.save()
+	.then(cat => res.json(cat))
+  .catch((err) => {console.log(err)});
+}
+
+
+function separate(arr) {
+   let newArr = [];
+   arr.forEach(el => {
+     const obj = {};
+     obj[el.slice(0,(el.indexOf('|')))]= el.slice(el.indexOf('|')+1);
+     newArr.push(obj);
+   });
+   return newArr;
+}
 
 module.exports = {
 	handleGetKittyList : handleGetKittyList,
 	handleUpdateKittyListing: handleUpdateKittyListing,
 	handleGetKittiesToDisplay : handleGetKittiesToDisplay,
-	handleVoteOnKitty : handleVoteOnKitty
+	handleVoteOnKitty : handleVoteOnKitty,
+	addCat: addCat
 };
