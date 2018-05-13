@@ -11,10 +11,8 @@ const handleGetKittyList = (req, res) => {
 
 	request(getKittiesURL + address)
 		.then((r) => {
-			const res = JSON.parse(r);
-			console.log(res);
-			const res = JSON.parse(r);
-			const kitties = res.kitties.map((kitty) => {
+			const jsonResult = JSON.parse(r); 
+			const kitties = jsonResult.kitties.map((kitty) => {
 				return {
 					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
 					id: kitty.id
@@ -47,7 +45,13 @@ const handleGetKittyList = (req, res) => {
 
 const handleUpdateKittyListing = (req, res) => {
 
-
+	Cat.findByIdAndUpdate(req.body.kittyID, {
+		siring: req.body.siring,
+		price: req.body.price,
+		listed: req.body.listed
+	})
+	.then((err) => {re.sstatus(200).send()})
+	.catch((err) => {res.status(401).send({error: err})});
 
 };
 
