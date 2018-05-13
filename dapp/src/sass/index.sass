@@ -73,3 +73,112 @@ button
 
   .full
     margin-bottom: $vspace
+
+.cat-details
+  .details
+    overflow-y: scroll
+    padding-bottom: 100px
+
+    img
+      width: 100%
+
+  .fabs
+    position: fixed
+    bottom: 50px
+    right: 10px
+    display: flex
+    justify-content: space-evenly
+    flex-wrap: nowrap
+    align-items: baseline
+
+  .tno
+    background-color: #fff
+    height: 80px
+    width: 80px
+    border-radius: 50%
+    -moz-border-radius: 50%
+    -o-border-radius: 50%
+    -ms-border-radius: 50%
+    display: inline-block
+    border: 10px solid #f0f0f0
+    i
+      color: #ff695b
+      font-size: 80px
+      padding: 0 10px
+
+  .ti
+    background-color: #fff
+    height: 50px
+    width: 50px
+    border-radius: 50%
+    -moz-border-radius: 50%
+    -o-border-radius: 50%
+    -ms-border-radius: 50%
+    display: inline-block
+    border: 10px solid #f0f0f0
+
+    .fa-rocket
+      font-size: 23px
+      padding: 15px
+      color: #398beb
+
+  .tyes
+    background-color: #fff
+    height: 80px
+    width: 80px
+    border-radius: 50%
+    -moz-border-radius: 50%
+    -o-border-radius: 50%
+    -ms-border-radius: 50%
+    display: inline-block
+    border: 10px solid #f0f0f0
+    i
+      color: #5de19c
+      font-size: 60px
+      padding: 12px
+
+  .attr
+    list-style: none
+    padding: 0
+
+    li
+      display: inline-block
+      padding: 0.5rem 1.0rem
+      background-color: $ui-color
+      color: darken($accent-color, 25%)
+      border-radius: 1.0rem
+      margin-right: 10px
+      margin-bottom: 4px
+      text-transform: lowercase
+      font-size: 0.7rem
+
+.match-list
+  width: 100%
+
+  .match
+    width: 100%
+
+    .row
+      display: flex
+      width: 100%
+      justify-content: space-between
+      align-items: center
+      margin-bottom: 10px
+
+      .cat
+        display: inline-block
+        img
+          width: 100px
+          height: 100px
+        .name
+          font-weight: bold
+          text-align: center
+          margin-top: 0.5rem
+          margin-bottom: 0
+
+      .fa-heart
+        color: $accent-color
+        font-size: 3.0rem
+    .status
+      text-align: center
+      font-style: italic

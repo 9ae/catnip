@@ -57,4 +57,100 @@ button {
 .landing .full {
   margin-bottom: 20px; }
 
+.cat-details .details {
+  overflow-y: scroll;
+  padding-bottom: 100px; }
+  .cat-details .details img {
+    width: 100%; }
+.cat-details .fabs {
+  position: fixed;
+  bottom: 50px;
+  right: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: nowrap;
+  align-items: baseline; }
+.cat-details .tno {
+  background-color: #fff;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  display: inline-block;
+  border: 10px solid #f0f0f0; }
+  .cat-details .tno i {
+    color: #ff695b;
+    font-size: 80px;
+    padding: 0 10px; }
+.cat-details .ti {
+  background-color: #fff;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  display: inline-block;
+  border: 10px solid #f0f0f0; }
+  .cat-details .ti .fa-rocket {
+    font-size: 23px;
+    padding: 15px;
+    color: #398beb; }
+.cat-details .tyes {
+  background-color: #fff;
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -o-border-radius: 50%;
+  -ms-border-radius: 50%;
+  display: inline-block;
+  border: 10px solid #f0f0f0; }
+  .cat-details .tyes i {
+    color: #5de19c;
+    font-size: 60px;
+    padding: 12px; }
+.cat-details .attr {
+  list-style: none;
+  padding: 0; }
+  .cat-details .attr li {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #C1E2FE;
+    color: #1ab4fb;
+    border-radius: 1rem;
+    margin-right: 10px;
+    margin-bottom: 4px;
+    text-transform: lowercase;
+    font-size: 0.7rem; }
+
+.match-list {
+  width: 100%; }
+  .match-list .match {
+    width: 100%; }
+    .match-list .match .row {
+      display: flex;
+      width: 100%;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px; }
+      .match-list .match .row .cat {
+        display: inline-block; }
+        .match-list .match .row .cat img {
+          width: 100px;
+          height: 100px; }
+        .match-list .match .row .cat .name {
+          font-weight: bold;
+          text-align: center;
+          margin-top: 0.5rem;
+          margin-bottom: 0; }
+      .match-list .match .row .fa-heart {
+        color: #97DDFD;
+        font-size: 3rem; }
+    .match-list .match .status {
+      text-align: center;
+      font-style: italic; }
+
 /*# sourceMappingURL=index.css.map */

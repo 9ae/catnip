@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import './CatDetails.css'
-
 class CatDetails extends React.Component {
 
   static defaultProps = {
@@ -17,6 +15,7 @@ class CatDetails extends React.Component {
 
   render() {
     return(
+      <div className="cat-details container">
       <div className="wrapper">
         <div className="details">
           <h1>Mate with {this.props.name}</h1>
@@ -35,6 +34,7 @@ class CatDetails extends React.Component {
         <div class="tyes"><i class="fa fa-heart" aria-hidden="true" onClick={this.likeCurrent}></i></div>
         </div>
       </div>
+    </div>
     )
   }
 }
