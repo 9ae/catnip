@@ -19,8 +19,12 @@ const handleGetKittyList = (req, res) => {
 				};
 			});
 
+			kitties.forEach((kitty) => {
+				addOrUpdateKitty(kitty.id); 
+			}); 
+
 			const updateKitty = (kitty) => {
-				return Cat.findByIdAndUpdate(kitty.id).then((cat) => {
+				return Cat.findById(kitty.id).then((cat) => {
 					if(cat){
 						kitty.listed = cat.listed;
 						kitty.siring = cat.siring;
@@ -111,7 +115,7 @@ const addCat = (req, res) => {
     cooldown: scrapeData.cooldown || null,
     cooldownindex: scrapeData.cooldownindex || null,
     generation: scrapeData.generation || null
-  }
+  }; 
 
 
   const newCat = new Cat(data);
