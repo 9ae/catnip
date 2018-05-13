@@ -2,7 +2,7 @@ const dbController = require('./db.controller');
 const request = require('request-promise-native');
 const Cat = require('../models/kitties.models').Cat;
 const scraper = require('./scraper').scrapeKitty;
-const mockID = 748523;
+const ObjectId = require('mongoose').Types.ObjectId;
 
 const handleGetKittyList = (req, res) => {
 	console.log('handling get kitty');
@@ -44,13 +44,12 @@ const handleGetKittyList = (req, res) => {
 }
 
 const handleUpdateKittyListing = (req, res) => {
-
-	Cat.findByIdAndUpdate(req.body.kittyID, {
+	Cat.findByIdAndUpdate(req.body.kittyid, {
 		siring: req.body.siring,
 		price: req.body.price,
 		listed: req.body.listed
 	})
-	.then((err) => {re.sstatus(200).send()})
+	.then((cat) => {res.json(cat)})
 	.catch((err) => {res.status(401).send({error: err})});
 
 }
@@ -59,7 +58,8 @@ const handleGetKittiesToDisplay = (req, res) => {
 	  const me = req.body.id;
 	  Cat.findById(me)
 	  .then(cat => {
-	    const disliked = cat.disliked;
+	    const disliked = [];
+			disliked = cat.disliked
 	    disliked.push(me);
 			disliked.push(cat.liked);
 	    Cat.find({_id: {$not : {$in : disliked}}, siringwith: 0})
@@ -74,12 +74,13 @@ const handleVoteOnKitty = (req, res) => {
 	  const me = req.body.myid;
 	  const mate = req.body.partnerid;
 	  const vote = parseInt(req.body.vote) > 0 ? 'liked' : 'disliked';
+		Cat.findById(me).then(cat => console.log(cat));
 		if (vote == 'liked') {
-			Cat.findByIdAndUpdate(me, {vote: mate, $push: {'matched': mate}})
+			Cat.findByIdAndUpdate(me, {$push: {vote: mate}, $push: {'matched': mate}})
 			.then(cat => console.log(cat))
 			.catch((err) => {res.status(401).send({error: err})});
 		} else {
-			Cat.findByIdAndUpdate(me, {vote: mate})
+			Cat.findByIdAndUpdate(me, {$push:{vote: mate}})
 			.then(cat => console.log(cat))
 			.catch((err) => {res.status(401).send({error: err})});
 		}
@@ -93,7 +94,7 @@ const addCat = (req, res) => {
 	  const data = {
 	    name: scrapeData.name || null,
 	    img: scrapeData.img || null,
-	    _id: req.body.kittyid || null,
+	    _id: req.body.kittyid,
 	    username: scrapeData.username || null,
 	    owner: req.body.owner || null,
 	    cattributes: scrapeData.cattributes+ '' || null,
@@ -116,16 +117,6 @@ const addCat = (req, res) => {
   .catch((err) => {console.log(err)});
 }
 
-
-function separate(arr) {
-   let newArr = [];
-   arr.forEach(el => {
-     const obj = {};
-     obj[el.slice(0,(el.indexOf('|')))]= el.slice(el.indexOf('|')+1);
-     newArr.push(obj);
-   });
-   return newArr;
-}
 
 module.exports = {
 	handleGetKittyList : handleGetKittyList,

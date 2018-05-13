@@ -11,7 +11,7 @@ router.route('/api/getKittyList').get(requestHandler.handleGetKittyList);
 router.route('/api/updateKittyListing').post(requestHandler.handleUpdateKittyListing);
 
 //takes a kittyID returns list of kitties that will show up
-router.route('/api/getKittiesToDisplay').get(requestHandler.handleGetKittiesToDisplay);
+router.route('/api/getKittiesToDisplay').post(requestHandler.handleGetKittiesToDisplay);
 
 //yourKittyID, likedKittyID, liked/disliked
 router.route('/api/voteOnKitty').post(requestHandler.handleVoteOnKitty);
