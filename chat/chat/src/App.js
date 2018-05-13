@@ -162,8 +162,12 @@ safari(){
   this.setState({load:true});
 }
 
-handleAccept(ev){
-  this.sendAccept(ev);
+handleAccept(bid,ev){
+  alert(bid);
+  this.checkBalance(bid).then(truth=>{
+    if(truth) this.sendAccept(ev);
+    else alert("Insuffient Funds to Accept Bid");
+  })
 }
 
 handleReject(ev){
@@ -180,7 +184,6 @@ handleSubmit(e){
     //console.log("truth",truth);
     if(truth){this.sendMsg(e);}
     else  alert("Insuffient Funds to Send Bid");
-  }).catch(err =>{
   });
 }
 
@@ -241,7 +244,7 @@ getMsgCount(){
               <span>{blob.price}</span><br/>
               <span>{blob.status}</span>
               <div>
-                <span onClick={this.handleAccept}>✔</span>
+                <span onClick={()=>{this.handleAccept(blob.price)}}>✔</span>
                 &nbsp;|&nbsp;
                 <span onClick={this.handleReject}>ｘ</span>
               </div><br/>
