@@ -11,6 +11,7 @@ const handleGetKittyList = (req, res) => {
 	request(getKittiesURL + address)
 		.then((r) => {
 			const res = JSON.parse(r); 
+			console.log(res); 
 			const kitties = res.kitties.map((kitty) => {
 				return {
 					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
