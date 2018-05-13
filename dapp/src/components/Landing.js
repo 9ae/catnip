@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Carousel } from 'react-responsive-carousel';
+import { Carousel, Button } from 'react-responsive-carousel';
 import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
+import request from 'superagent';
 // const Web3 = require('web3');
-
 const API_ROOT = require('../API_ROOT').API_ROOT;
 
 class Landing extends Component {
@@ -41,18 +41,15 @@ class Landing extends Component {
 
   componentDidMount(){
     // const acc = window.web3.eth.getAccounts()[0];
+    console.log('COMPONENT DID MOOOOOUNTTTT!!!!!');
     const acc = '0x7Ce0448B0FAFAB6cAce981fFFA967cf380A2cc33';
     this.setState({address: acc});
-    fetch('/api/getKittyList',{
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: "POST",
-      body: JSON.stringify({address: this.state.address})
-    })
+    request
+    .post(API_ROOT+'/api/getKittyList')
+    .send({address: this.state.address})
+    .set('accept', 'json')
     .then( data => {
-        console.log(data)
+        console.log(data);
         this.setState({userCats: data});
     })
   }
