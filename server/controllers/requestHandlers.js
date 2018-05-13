@@ -5,7 +5,6 @@ const scraper = require('./scraper').scrapeKitty;
 const ObjectId = require('mongoose').Types.ObjectId;
 
 const addCat = (kittyID, address) => {
-	console.log('adding cat = ' + kittyID);
 
 	return Promise.all([scraper(kittyID, address), Cat.findById(kittyID)])
 	.then((res) => {
@@ -31,7 +30,8 @@ const addCat = (kittyID, address) => {
 	    price: catInDB ? catInDB.price : 0,
 	    siring: catInDB ? catInDB.siring : false,
 	    liked: catInDB ? catInDB.liked : [],
-	    disliked: catInDB ? catInDB.disliked : []
+	    disliked: catInDB ? catInDB.disliked : [],
+	    matched: catInDB ? catInDB.matched : []
 	  }
 
 	  const newCat = new Cat(data);
@@ -51,6 +51,7 @@ const addCat = (kittyID, address) => {
 const handleGetKittyList = (req, res) => {
 	console.log('handling get kitty');
 	const address = req.query.address;
+	console.log(address);
 	const getKittiesURL = 'https://api.cryptokitties.co/kitties?owner_wallet_address=';
 
 	request(getKittiesURL + address)
@@ -71,8 +72,8 @@ const handleGetKittyList = (req, res) => {
 						img: cat.img,
 						listed: cat.listed,
 						siring: cat.siring,
-						price: cat.price, 
-						liked: cat.liked, 
+						price: cat.price,
+						liked: cat.liked,
 						disliked: cat.disliked
 					}));
 				})
@@ -82,7 +83,11 @@ const handleGetKittyList = (req, res) => {
 	    			console.log(err)
 	    			res.status(401).send({error: err});
 	    		});
-		});
+		})
+		.catch((err) => {
+				console.log(err)
+				res.status(401).send({error: err});
+			});
 };
 
 const handleUpdateKittyListing = (req, res) => {
@@ -153,6 +158,20 @@ const handleVoteOnKitty = (req, res) => {
 		}
 }
 
+const handleGetMatchesList = (req, res) => {
+
+	const id = req.query.kittyID;
+
+	console.log('get matches list'); 
+
+	return Cat.findById(id)
+		.then((cat) => {
+			console.log(cat)
+			res.json(cat.matched)})
+			.catch((err) => {res.status(401).send({error: err})});
+
+};
+
 
 
 module.exports = {
@@ -160,5 +179,6 @@ module.exports = {
 	handleUpdateKittyListing: handleUpdateKittyListing,
 	handleGetKittiesToDisplay : handleGetKittiesToDisplay,
 	handleVoteOnKitty : handleVoteOnKitty,
+	handleGetMatchesList: handleGetMatchesList,
 	addCat: addCat
 };

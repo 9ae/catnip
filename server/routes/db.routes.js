@@ -16,6 +16,8 @@ router.route('/api/getKittiesToDisplay').get(requestHandler.handleGetKittiesToDi
 //yourKittyID, likedKittyID, liked/disliked
 router.route('/api/voteOnKitty').post(requestHandler.handleVoteOnKitty);
 
+router.route('/api/getMatchesList').get(requestHandler.handleGetMatchesList);
+
 //add cat NOTE: for testing
 router.route('/api/addCat').post(requestHandler.addCat);
 
