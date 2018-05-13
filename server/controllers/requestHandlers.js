@@ -11,7 +11,6 @@ const handleGetKittyList = (req, res) => {
 	request(getKittiesURL + address)
 		.then((r) => {
 			const res = JSON.parse(r); 
-			console.log(res); 
 			const kitties = res.kitties.map((kitty) => {
 				return {
 					name: kitty.name ? kitty.name : 'Kitty #' + kitty.id,
@@ -21,8 +20,6 @@ const handleGetKittyList = (req, res) => {
 
 			const updateKitty = (kitty) => {
 				return Cat.findById(kitty.id).then((cat) => {
-
-					console.log('getting kitty'); 
 
 					if(cat){
 						kitty.listed = cat.listed;
@@ -38,20 +35,18 @@ const handleGetKittyList = (req, res) => {
 			};
 
 			Promise.all(kitties.map(kitty => updateKitty(kitty)))
-			.then((res) => {
-				console.log(res); 
-			})
-			.catch((err) => {
-				console.log(err); 
-			}); 
+		    .then(catList => res.json(catList))
+	    	.catch((err) => {res.status(401).send({error: err})});
+
 		})
 
-}
+};
 
 const handleUpdateKittyListing = (req, res) => {
 
 
-}
+
+};
 
 const handleGetKittiesToDisplay = (req, res) => {
 	  const me = req.body.id;
@@ -66,7 +61,7 @@ const handleGetKittiesToDisplay = (req, res) => {
 	    .catch((err) => {res.status(401).send({error: err})});
 	  })
 	  .catch((err) => {res.status(401).send({error: err})});
-}
+};
 
 const handleVoteOnKitty = (req, res) => {
 	  const me = req.body.myid;
@@ -80,7 +75,7 @@ const handleVoteOnKitty = (req, res) => {
 	  Cat.findByIdAndUpdate(me, {vote: mate})
 		.then(cat => console.log(cat))
 		.catch((err) => {res.status(401).send({error: err})});
-}
+};
 
 
 module.exports = {
