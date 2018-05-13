@@ -66,10 +66,12 @@ const handleGetKittyList = (req, res) => {
 					return cats.map(cat => ({
 						name: cat.name,
 						id: cat._id,
-						img: img,
+						img: cat.img,
 						listed: cat.listed,
 						siring: cat.siring,
-						price: cat.price
+						price: cat.price, 
+						liked: cat.liked, 
+						disliked: cat.disliked
 					}));
 				})
 				.then((cats) => {
@@ -126,8 +128,8 @@ const handleGetKittiesToDisplay = (req, res) => {
 
 const handleVoteOnKitty = (req, res) => {
 		console.log('voting!');
-	  const me = req.body.myid;
-	  const mate = req.body.partnerid;
+	  const me = req.body.kittyID;
+	  const mate = req.body.likedKittyID;
 	  const vote = parseInt(req.body.vote) > 0 ? 'liked' : 'disliked';
 		if (vote == 'liked') {
 			Cat.findByIdAndUpdate(me, {$push: {liked: mate}})
