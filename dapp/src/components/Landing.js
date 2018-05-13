@@ -46,7 +46,7 @@ class Landing extends Component {
     this.setState({address: acc});
     request
     .post(API_ROOT+'/api/getKittyList')
-    .send({address: this.state.address})
+    .send({'address': this.state.address})
     .set('accept', 'json')
     .then( data => {
         console.log(data);
