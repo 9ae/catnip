@@ -41,20 +41,29 @@ class Landing extends Component {
 
   componentDidMount(){
     // const acc = window.web3.eth.getAccounts()[0];
-    console.log('COMPONENT DID MOOOOOUNTTTT!!!!!');
     const acc = '0x7Ce0448B0FAFAB6cAce981fFFA967cf380A2cc33';
     this.setState({address: acc});
     request
-    .post(API_ROOT+'/api/getKittyList')
-    .send({'address': this.state.address})
+    .get(API_ROOT+'/api/getKittyList?address='+this.state.address)
     .set('accept', 'json')
     .then( data => {
         console.log(data);
-        this.setState({userCats: data});
+        this.setState({userCats: data.body});
     })
   }
 
   render() {
+    const catShow = this.state.userCats.filter((el) => el.img).map( el => {
+        <div>
+            <img src={el.img ? el.img : ''}/>
+            <p className="legend">Legend 1</p>
+        </div>
+      }
+    );
+
+    console.log(catShow)
+
+
     return (
     <div className="tbg">
       <div className="theader">
@@ -67,18 +76,7 @@ class Landing extends Component {
       <div className="tbgwrap">
         <h2>Choose your kitty</h2>
         <Carousel>
-                        <div>
-                            <img src="assets/1.jpeg" />
-                            <p className="legend">Legend 1</p>
-                        </div>
-                        <div>
-                            <img src="assets/2.jpeg" />
-                            <p className="legend">Legend 2</p>
-                        </div>
-                        <div>
-                            <img src="assets/3.jpeg" />
-                            <p className="legend">Legend 3</p>
-                        </div>
+            {catShow}
         </Carousel>
         <div>Price</div>
       </div>
