@@ -37,6 +37,7 @@ contract kl {
     address mintedBy;
     uint64 mintedAt;
     string message;
+    int value;
   }
 
   /*** STORAGE ***/
@@ -75,11 +76,12 @@ contract kl {
     Transfer(_from, _to, _tokenId);
   }
 
-  function _mint(address _owner) internal returns (uint256 tokenId) {
+  function _mint(address _owner, int r) internal returns (uint256 tokenId) {
     Token memory token = Token({
       mintedBy: _owner,
       mintedAt: uint64(now),
-      message: "sup"
+      message: "Catnip.fun",
+      value: r
     });
     tokenId = tokens.push(token) - 1;
 
@@ -87,7 +89,6 @@ contract kl {
 
     _transfer(0, _owner, tokenId);
   }
-
 
   /*** ERC721 IMPLEMENTATION ***/
 
@@ -156,8 +157,8 @@ contract kl {
 
   /*** OTHER EXTERNAL FUNCTIONS ***/
 
-  function mint() external returns (uint256) {
-    return _mint(msg.sender);
+  function mint(int r) external returns (uint256) {
+    return _mint(msg.sender,r);
   }
 
   function getToken(uint256 _tokenId) external view returns (address mintedBy, uint64 mintedAt) {
@@ -166,11 +167,27 @@ contract kl {
     mintedBy = token.mintedBy;
     mintedAt = token.mintedAt;
   }
-  
-  function getString(uint256 _tokenId) external view returns (string){
+
+  function getData(uint256 _tokenId) external view returns (string,int){
     Token memory t = tokens [_tokenId];
     return t.message;
   }
 }
 
+//Contract Is what's called by both users upon acceptance of breeding
+contract mate{
+  event Mate(address A, address B);
+  event sendGifts(address owner,uint256 tokenId);
+
+  mapping (address=>address) pending;
+
+  struct sign{
+    bool a;
+    bool b;
+  }
+
+  function holdSigs(address _user,address counter_party,){
+    pending[]
+  }
+}
 /**
