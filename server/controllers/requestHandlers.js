@@ -29,7 +29,9 @@ const addCat = (kittyID, address) => {
 	    cooldownindex: scrapeData.cooldownindex || null,
 	    generation: scrapeData.generation || null,
 	    price: catInDB ? catInDB.price : 0,
-	    siring: catInDB ? catInDB.siring : false
+	    siring: catInDB ? catInDB.siring : false,
+	    liked: catInDB ? catInDB.liked : [],
+	    disliked: catInDB ? catInDB.disliked : []
 	  }
 
 	  const newCat = new Cat(data);
