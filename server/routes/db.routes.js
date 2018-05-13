@@ -16,10 +16,8 @@ router.route('/api/getKittiesToDisplay').get(requestHandler.handleGetKittiesToDi
 //yourKittyID, likedKittyID, liked/disliked
 router.route('/api/voteOnKitty').post(requestHandler.handleVoteOnKitty);
 
-<<<<<<< HEAD
 //add cat NOTE: for testing
 router.route('/api/addCat').post(requestHandler.addCat);
 
-=======
->>>>>>> 6e9995efb017e6b9c43f689ac49f4b0d0cdff5c0
+
 module.exports = router;
