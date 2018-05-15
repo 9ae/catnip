@@ -1,9 +1,6 @@
 # CatNip
+The project is currently under development.
 
-## server
+Stay tuned for updates [here](http://catnip.fun/)
 
-## dapp
-
-## web3
-
-sample parsed kitten data is in ethereum/data.json
+Meow!
