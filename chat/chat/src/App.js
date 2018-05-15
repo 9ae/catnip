@@ -76,7 +76,7 @@ class App extends Component {
       //console.log(accounts[0]);
       const contract = await new window.web3.eth.Contract(
         compiledContract.abi,
-        '0x3a5f6476c2b09838cfd3bb723c7b4bd83cae6cca'
+        '0xbd23fe586a206ec4a9c314a178db6f7d62c41b44'
       );
       //console.log(contract.options.address);
       //

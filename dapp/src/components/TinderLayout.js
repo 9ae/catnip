@@ -3,8 +3,8 @@ import Card from './Card';
 import './TinderLayout.css';
 import request from 'superagent';
 
-const API_ROOT = require('../API_ROOT').API_ROOT; 
-const MOCK_KITTY_ID = 121638; 
+const API_ROOT = require('../API_ROOT').API_ROOT;
+const MOCK_KITTY_ID = 121638;
 
 
 class TinderLayout extends Component {
@@ -117,7 +117,7 @@ class TinderLayout extends Component {
               <div className="tno">
                 <i className="fa fa-times" aria-hidden="true" onClick={this.skipCurrent}></i>
               </div>
-              <div className="ti"><i className="fas fa-rocket" aria-hidden="true"></i></div>
+              <div className="ti"><a href="http://localhost:3000"><i className="fas fa-rocket" aria-hidden="true" ></i></a></div>
               <div className="tyes"><i className="fa fa-heart" aria-hidden="true" onClick={this.likeCurrent}></i></div>
             </div>
         </div>
